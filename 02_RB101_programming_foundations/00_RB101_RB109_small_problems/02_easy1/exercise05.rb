@@ -1,7 +1,6 @@
 def reverse_sentence(string)
   words = string.split(' ')
-  reversed = []
-  words.reverse_each { |word| reversed << word }
+  reversed = words.reverse_each.with_object([]) { |word, arr| arr << word }
   reversed.join(' ')
 end
 
