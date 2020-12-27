@@ -1,11 +1,7 @@
 def stringy(num)
-  output_string = ''
-
-  num.times do |iteration|
-    output_string += (iteration + 1).odd? ? '1' : '0'
+  (1..num).to_a.reduce('') do |string, iteration|
+    string + (iteration.odd? ? '1' : '0')
   end
-
-  output_string
 end
 
 puts stringy(6) == '101010'
