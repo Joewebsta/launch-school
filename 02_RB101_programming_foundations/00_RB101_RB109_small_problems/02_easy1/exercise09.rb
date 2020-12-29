@@ -1,28 +1,20 @@
 # Brute force solution
 
-# def sum(num)
-#   numbers = []
-#   idx = 0
-#   sum = 0
+def sum(num)
+  sum = 0
 
-#   loop do
-#     remainder, num = num.divmod(10)
-#     numbers.unshift(num)
-#     num = remainder
-#     break if remainder.zero?
-#   end
+  str_digits = num.to_s.chars
 
-#   while idx <= (numbers.length - 1)
-#     sum += numbers[idx]
-#     idx += 1
-#   end
+  str_digits.each do |str_digit|
+    sum += str_digit.to_i
+  end
 
-#   sum
-# end
-
-def sum(number)
-  number.to_s.chars.reduce(0) { |sum, num| sum + num.to_i }
+  sum
 end
+
+# def sum(number)
+#   number.to_s.chars.reduce(0) { |sum, num| sum + num.to_i }
+# end
 
 puts sum(23) == 5
 puts sum(496) == 19
