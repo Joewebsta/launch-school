@@ -1,7 +1,7 @@
-def stringy(num)
-  (1..num).to_a.reduce('') do |string, iteration|
-    string + (iteration.odd? ? '1' : '0')
-  end
+def stringy(size)
+  size.times.reduce([]) do |arr, index|
+    arr << (index.even? ? 1 : 0)
+  end.join
 end
 
 puts stringy(6) == '101010'
