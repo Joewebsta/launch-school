@@ -1,7 +1,5 @@
 def reverse_sentence(string)
-  words = string.split(' ')
-  reversed = words.reverse_each.with_object([]) { |word, arr| arr << word }
-  reversed.join(' ')
+  string.split.reverse.join(' ')
 end
 
 puts reverse_sentence('') == ''
