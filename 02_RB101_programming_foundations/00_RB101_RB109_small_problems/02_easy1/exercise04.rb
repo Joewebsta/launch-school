@@ -4,18 +4,10 @@ vehicles = %w[
 ]
 
 def count_occurrences(vehicles)
-  ocurrences = vehicles.each_with_object({}) do |vehicle, hash|
-    if hash[vehicle]
-      hash[vehicle] += 1
-    else
-      hash[vehicle] = 1
-    end
+  ocurrences = vehicles.uniq.each_with_object({}) do |vehicle, hash|
+    hash[vehicle] = vehicles.count(vehicle)
   end
 
-  print_occurances(ocurrences)
-end
-
-def print_occurances(ocurrences)
   ocurrences.each do |vehicle, count|
     puts "#{vehicle} => #{count}"
   end
