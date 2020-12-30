@@ -1,9 +1,9 @@
 def reverse_words(string)
-  words = string.split(' ')
-  reversed_words = words.map do |word|
-    word.length >= 5 ? word.reverse : word
+  words = string.split.map do |word|
+    word.length >= 5 ? word.reverse! : word
   end
-  reversed_words.join(' ')
+
+  words.join(' ')
 end
 
 puts reverse_words('Professional')          # => lanoisseforP
