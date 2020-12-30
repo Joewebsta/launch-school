@@ -5,25 +5,25 @@ puts "\nPlease provide a second number:"
 num2 = gets.chomp.to_i
 
 puts "\nWhat operation would you like to perform?"
-puts 'Options: add, subtract, multiply or divide'
+puts 'Options: 1) add, 2) subtract, 3) multiply or 4) divide'
 
-operation = gets.chomp.downcase
+operator = gets.chomp
 puts
 
-loop do
-  break if %w[add subtract multiply divide].include?(operation)
+# loop do
+#   break if %w[1 2 3 4].include?(operator)
 
-  puts
-  puts 'You did not provide a valid operaion.'
-  puts 'Please select one of the following options:'
-  puts 'Add, subtract, multiply or divide'
+#   puts
+#   puts 'You did not provide a valid operaion.'
+#   puts 'Please select one of the following options:'
+#   puts '1) add, 2) subtract, 3) multiply or 4) divide'
 
-  operation = gets.chomp.downcase
-end
+#   operator = gets.chomp
+# end
 
-case operation
-when 'add' then puts "#{num1} + #{num2} = #{num1 + num2}"
-when 'subtract' then puts "#{num1} - #{num2} = #{num1 - num2}"
-when 'multiply' then puts "#{num1} * #{num2} = #{num1 * num2}"
-when 'divide' then puts "#{num1} / #{num2} = #{num1 / num2}"
+case operator
+when '1' then puts "#{num1} + #{num2} = #{num1 + num2}"
+when '2' then puts "#{num1} - #{num2} = #{num1 - num2}"
+when '3' then puts "#{num1} * #{num2} = #{num1 * num2}"
+when '4' then puts "#{num1} / #{num2} = #{num1.to_f / num2}"
 end
