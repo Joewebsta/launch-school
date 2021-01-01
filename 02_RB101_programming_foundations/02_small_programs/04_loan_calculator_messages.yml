@@ -5,3 +5,4 @@ greeting: Hello
 amount_prompt: "Provide your loan amount:"
 apr_prompt: "Provide the Annual Percentage Rate (APR). Example: '6.25':"
 duration_prompt: "Provide the loan duration in months:"
+result: "Your monthly payment will be: $"

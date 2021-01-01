@@ -49,4 +49,4 @@ duration = gets.chomp.to_i
 
 monthly_amt = loan_calculator(amount, apr, duration)
 
-p monthly_amt
+prompt("#{message('result')}#{monthly_amt}.")
