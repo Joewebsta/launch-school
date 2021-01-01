@@ -5,7 +5,7 @@ name = nil
 amount = nil
 
 def loan_calculator(amount, apr, duration)
-  apr /= 100.0
+  apr /= 100
   monthly_interest_rate = apr / 12
 
   calculate_monthly_payment(amount, monthly_interest_rate, duration).round(2)
@@ -38,15 +38,23 @@ end
 
 prompt("#{message('greeting')} #{name}!")
 
-prompt(message('amount_prompt'))
-amount = gets.chomp.to_f
+loop do
+  prompt(message('amount_prompt'))
+  amount = gets.chomp.to_f
 
-prompt(message('apr_prompt'))
-apr = gets.chomp.to_f
+  prompt(message('apr_prompt'))
+  apr = gets.chomp.to_f
 
-prompt(message('duration_prompt'))
-duration = gets.chomp.to_i
+  prompt(message('duration_prompt'))
+  duration = gets.chomp.to_f
 
-monthly_amt = loan_calculator(amount, apr, duration)
+  monthly_amt = loan_calculator(amount, apr, duration)
 
-prompt("#{message('result')}#{monthly_amt}.")
+  prompt("#{message('result')}#{monthly_amt}.")
+
+  prompt(message('new_calculation'))
+  new_calculation = gets.chomp.downcase
+  break unless new_calculation == 'y'
+end
+
+prompt(message('farewell'))
