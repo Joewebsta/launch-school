@@ -1,3 +1,4 @@
 welcome: "Welcome to Loan Calculator!"
 name_prompt: "What is your name?"
+name_invalid: "Please provide a valid name."
 greeting: Hello

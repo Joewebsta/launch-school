@@ -1,6 +1,7 @@
 require 'yaml'
 
 MESSAGES = YAML.load_file('04_loan_calculator_messages.yml')
+name = nil
 
 def loan_calculator(amount, apr, duration)
   apr /= 100.0
@@ -21,9 +22,19 @@ def message(key)
   MESSAGES[key]
 end
 
+def valid_name?(name)
+  !name.empty?
+end
+
 prompt(message('welcome'))
 prompt(message('name_prompt'))
-name = gets.chomp
+
+loop do
+  name = gets.chomp
+  break if valid_name?(name)
+  prompt(message('name_invalid'))
+end
+
 prompt("#{message('greeting')} #{name}!")
 
 loan_calculator(10_000, 6, 128)
