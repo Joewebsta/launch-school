@@ -2,12 +2,13 @@ require 'yaml'
 
 MESSAGES = YAML.load_file('04_loan_calculator_messages.yml')
 name = nil
+amount = nil
 
 def loan_calculator(amount, apr, duration)
   apr /= 100.0
   monthly_interest_rate = apr / 12
 
-  calculate_monthly_payment(amount, monthly_interest_rate, duration)
+  calculate_monthly_payment(amount, monthly_interest_rate, duration).round(2)
 end
 
 def calculate_monthly_payment(amount, monthly_interest_rate, duration)
@@ -37,4 +38,15 @@ end
 
 prompt("#{message('greeting')} #{name}!")
 
-loan_calculator(10_000, 6, 128)
+prompt(message('amount_prompt'))
+amount = gets.chomp.to_f
+
+prompt(message('apr_prompt'))
+apr = gets.chomp.to_f
+
+prompt(message('duration_prompt'))
+duration = gets.chomp.to_i
+
+monthly_amt = loan_calculator(amount, apr, duration)
+
+p monthly_amt

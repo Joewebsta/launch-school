@@ -2,3 +2,6 @@ welcome: "Welcome to Loan Calculator!"
 name_prompt: "What is your name?"
 name_invalid: "Please provide a valid name."
 greeting: Hello
+amount_prompt: "Provide your loan amount:"
+apr_prompt: "Provide the Annual Percentage Rate (APR). Example: '6.25':"
+duration_prompt: "Provide the loan duration in months:"
