@@ -1,3 +1,6 @@
+require 'yaml'
+MESSAGES = YAML.load_file('03_calculator_messages.yml')
+
 def prompt(message)
   puts "=> #{message}"
 end
@@ -37,35 +40,35 @@ What operation would you like to perform?
    4) divide
 MSG
 
-prompt("Welcome to Calculator! Enter your name:")
+prompt(MESSAGES['welcome'])
 
 loop do
   name = gets.chomp
   if name.empty?
-    prompt("Make sure to use a valid name.")
-    prompt("Enter your name:")
+    prompt(MESSAGES['name_invalid'])
+    prompt(MESSAGES['name_prompt'])
   else
     break
   end
 end
 
-prompt("Hello #{name}!")
+prompt("#{MESSAGES['user_greeting']} #{name}!")
 
 loop do
   loop do
-    prompt("Please provide a number:")
+    prompt(MESSAGES['number_prompt1'])
     num1 = gets.chomp
 
     break if number?(num1)
-    prompt("Hmm... That doesn't look like a valid number")
+    prompt(MESSAGES['number_invalid'])
   end
 
   loop do
-    prompt("Please provide a second number:")
+    prompt(MESSAGES['number_prompt2'])
     num2 = gets.chomp
 
     break if number?(num2)
-    prompt("Hmm... That doesn't look like a valid number")
+    prompt(MESSAGES['number_invalid'])
   end
 
   prompt(operator_prompt)
@@ -76,11 +79,11 @@ loop do
     if %w(1 2 3 4).include?(operator)
       break
     else
-      promp("Please choose 1, 2, 3 or 4.")
+      prompt(MESSAGES['operation_invalid'])
     end
   end
 
-  prompt("#{operation_to_message(operator)} the two numbers")
+  prompt("#{operation_to_message(operator)} #{MESSAGES['operation_status']}")
 
   num1 = integer?(num1) ? num1.to_i : num1.to_f
   num2 = integer?(num2) ? num2.to_i : num2.to_f
@@ -92,9 +95,9 @@ loop do
        when '4' then "#{num1} / #{num2} = #{num1.to_f / num2}"
        end
 
-  prompt("Would you like to perform another calculation? (Y/N)")
+  prompt(MESSAGES['restart_prompt'])
   answer = gets.chomp.downcase
   break unless answer.downcase.start_with?('y')
 end
 
-prompt("Thank you for using the calculator. Good bye!")
+prompt(MESSAGES['farewell'])
