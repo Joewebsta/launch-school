@@ -2,8 +2,16 @@ def prompt(message)
   puts "=> #{message}"
 end
 
-def valid_number?(num)
-  num.to_i.to_s == num
+def integer?(input)
+  input.to_i.to_s == input
+end
+
+def float?(input)
+  input.to_f.to_s == input
+end
+
+def number?(input)
+  integer?(input) || float?(input)
 end
 
 def operation_to_message(operator)
@@ -48,7 +56,7 @@ loop do
     prompt("Please provide a number:")
     num1 = gets.chomp
 
-    break if valid_number?(num1)
+    break if number?(num1)
     prompt("Hmm... That doesn't look like a valid number")
   end
 
@@ -56,7 +64,7 @@ loop do
     prompt("Please provide a second number:")
     num2 = gets.chomp
 
-    break if valid_number?(num2)
+    break if number?(num2)
     prompt("Hmm... That doesn't look like a valid number")
   end
 
@@ -74,8 +82,8 @@ loop do
 
   prompt("#{operation_to_message(operator)} the two numbers")
 
-  num1 = num1.to_i
-  num2 = num2.to_i
+  num1 = integer?(num1) ? num1.to_i : num1.to_f
+  num2 = integer?(num2) ? num2.to_i : num2.to_f
 
   puts case operator
        when '1' then "#{num1} + #{num2} = #{num1 + num2}"
