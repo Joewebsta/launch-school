@@ -3,9 +3,10 @@ require 'yaml'
 MESSAGES = YAML.load_file('04_loan_calculator_messages.yml')
 name = nil
 amount = nil
+apr = nil
 
 def loan_calculator(amount, apr, duration)
-  apr /= 100
+  apr = apr.to_f / 100
   monthly_interest_rate = apr / 12
 
   calculate_monthly_payment(amount.to_f, monthly_interest_rate,
@@ -32,6 +33,10 @@ def valid_amount?(amount)
   !(amount.empty? || amount.to_f.negative?)
 end
 
+def valid_apr?(apr)
+  !(apr.empty? || apr.to_f.negative?)
+end
+
 prompt(message('welcome'))
 prompt(message('name_prompt'))
 
@@ -53,7 +58,13 @@ loop do
   end
 
   prompt(message('apr_prompt'))
-  apr = gets.chomp.to_f
+  prompt(message('apr_prompt_example'))
+
+  loop do
+    apr = gets.chomp
+    break if valid_apr?(apr)
+    prompt(message('apr_invalid'))
+  end
 
   prompt(message('duration_prompt'))
   duration = gets.chomp.to_f
