@@ -4,17 +4,18 @@ MESSAGES = YAML.load_file('04_loan_calculator_messages.yml')
 name = nil
 amount = nil
 apr = nil
+years = nil
 
-def loan_calculator(amount, apr, duration)
+def loan_calculator(amount, apr, years)
   apr = apr.to_f / 100
   monthly_interest_rate = apr / 12
 
   calculate_monthly_payment(amount.to_f, monthly_interest_rate,
-                            duration).round(2)
+                            years.to_i).round(2)
 end
 
-def calculate_monthly_payment(amount, monthly_interest_rate, duration)
-  amount * (monthly_interest_rate / (1 - (1 + monthly_interest_rate)**(-duration)))
+def calculate_monthly_payment(amount, monthly_interest_rate, years)
+  amount * (monthly_interest_rate / (1 - (1 + monthly_interest_rate)**(-years)))
 end
 
 def prompt(input)
@@ -35,6 +36,10 @@ end
 
 def valid_apr?(apr)
   !(apr.empty? || apr.to_f.negative?)
+end
+
+def valid_years?(years)
+  !(years.empty? || years.to_i.negative?)
 end
 
 prompt(message('welcome'))
@@ -66,10 +71,15 @@ loop do
     prompt(message('apr_invalid'))
   end
 
-  prompt(message('duration_prompt'))
-  duration = gets.chomp.to_f
+  prompt(message('years_prompt'))
 
-  monthly_amt = loan_calculator(amount, apr, duration)
+  loop do
+    years = gets.chomp
+    break if valid_years?(years)
+    puts(message('years_invalid'))
+  end
+
+  monthly_amt = loan_calculator(amount, apr, years)
 
   prompt("#{message('result')}#{monthly_amt}.")
 
