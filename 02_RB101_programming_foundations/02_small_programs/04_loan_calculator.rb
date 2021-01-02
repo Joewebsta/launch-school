@@ -7,11 +7,12 @@ interest_rate = nil
 years = nil
 
 def loan_calculator(amount, interest_rate, years)
-  interest_rate = interest_rate.to_f / 100
-  monthly_interest_rate = interest_rate / 12
+  amount = amount.to_f
+  annual_interest_rate = interest_rate.to_f / 100
+  monthly_interest_rate = annual_interest_rate / 12
+  months = years.to_i * 12
 
-  calculate_monthly_payment(amount.to_f, monthly_interest_rate,
-                            years.to_i).round(2)
+  calculate_monthly_payment(amount, monthly_interest_rate, months).round(2)
 end
 
 def calculate_monthly_payment(amount, monthly_interest_rate, years)
@@ -79,9 +80,9 @@ loop do
     puts(message('years_invalid'))
   end
 
-  monthly_amt = loan_calculator(amount, interest_rate, years)
+  monthly_payment = loan_calculator(amount, interest_rate, years)
 
-  prompt("#{message('result')}#{monthly_amt}.")
+  prompt("#{message('result')}#{format('%.2f', monthly_payment)}")
 
   prompt(message('new_calculation'))
   new_calculation = gets.chomp.downcase
