@@ -1,31 +1,33 @@
+def compute_sum(limit)
+  Array(1..limit).reduce(:+)
+end
+
+def compute_product(limit)
+  Array(1..limit).reduce(:*)
+end
+
+def print_result(operation_type, limit, result)
+  puts "The #{operation_type} of the integers between 1 and " \
+       "#{limit} is #{result}."
+end
+
 puts ">> Please enter an integer greater than 0:"
 limit = gets.chomp.to_i
 
-puts ">> Enter 's' to compute the sum, 'p' to compute the product."
-operation = gets.chomp.downcase
+operation = ''
+loop do
+  puts ">> Enter 's' to compute the sum, 'p' to compute the product."
+  operation = gets.chomp.downcase
+  break if ['s', 'p'].include?(operation)
+end
 
-start = 1
-result = 0
+# break if operation.to_i.to_s == operation
 
 case operation
 when 's'
-  start.upto(limit) { |num| result += num }
-  puts "The sum of the integers between #{start} and #{limit} is #{result}."
+  result = compute_sum(limit)
+  print_result('sum', limit, result)
 when 'p'
-  result = 1
-  start.upto(limit) { |num| result *= num }
-  puts "The product of the integers between #{start} and #{limit} is #{result}."
+  result = compute_product(limit)
+  print_result('product', limit, result)
 end
-
-# puts "The sum of the integers between 1 and 5 is 15."
-
-# >> Please enter an integer greater than 0:
-# 5
-# >> Enter 's' to compute the sum, 'p' to compute the product.
-# s
-
-# >> Please enter an integer greater than 0:
-# 6
-# >> Enter 's' to compute the sum, 'p' to compute the product.
-# p
-# The product of the integers between 1 and 6 is 720.
