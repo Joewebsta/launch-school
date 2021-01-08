@@ -21,8 +21,6 @@ loop do
   break if ['s', 'p'].include?(operation)
 end
 
-# break if operation.to_i.to_s == operation
-
 case operation
 when 's'
   result = compute_sum(limit)
