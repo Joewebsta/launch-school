@@ -2,11 +2,6 @@ def prompt(message)
   puts "=> #{message}"
 end
 
-prompt("Welcome to Rock, Paper, Scissors!")
-prompt("Enter r) for rock, p) for paper or s) for scissors.")
-user_selection = gets.chomp.to_sym
-comp_selection = ['r', 'p', 's'].sample.to_sym
-
 selections = {
   r: "rock",
   p: "paper",
@@ -31,10 +26,24 @@ results = {
   }
 }
 
-user_selection_name = selections[user_selection]
-comp_selection_name = selections[comp_selection]
-results_message = results[user_selection][comp_selection]
+prompt("Welcome to Rock, Paper, Scissors!")
 
-prompt("Your selection: #{user_selection_name}.")
-prompt("Computer selection: #{comp_selection_name}.")
-prompt(results_message)
+loop do
+  prompt("Enter r) for rock, p) for paper or s) for scissors.")
+  user_selection = gets.chomp.to_sym
+  comp_selection = ['r', 'p', 's'].sample.to_sym
+
+  user_selection_name = selections[user_selection]
+  comp_selection_name = selections[comp_selection]
+  results_message = results[user_selection][comp_selection]
+
+  prompt("Your selection: #{user_selection_name}.")
+  prompt("Computer selection: #{comp_selection_name}.")
+  prompt(results_message)
+
+  puts
+
+  prompt("Would you like to play again?")
+  answer = gets.chomp
+  break unless answer.downcase.start_with?('y')
+end
