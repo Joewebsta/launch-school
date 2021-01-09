@@ -1,47 +1,42 @@
+VALID_CHOICES = %w(rock paper scissors)
+
 def prompt(message)
   puts "=> #{message}"
 end
 
-selections = {
-  r: "rock",
-  p: "paper",
-  s: "scissors"
-}
+def win?(first, second)
+  (first == 'rock') && (second == 'scissors') ||
+    (first == 'paper') && (second == 'rock') ||
+    (first == 'scissors') && (second == 'paper')
+end
 
-results = {
-  r: {
-    r: 'Rock and rock tie. Try again',
-    p: 'Paper beats rock. You lose.',
-    s: 'Rock beats scissors. You win!'
-  },
-  p: {
-    r: 'Paper beats rock. You win!',
-    p: 'Paper and paper tie. Try again.',
-    s: 'Scissors beats rock. You lose.'
-  },
-  s: {
-    r: 'Rock beats scissors. You lose.',
-    p: 'Scissors beats paper. You win!',
-    s: 'Scissors and scissors tie. Try again.'
-  }
-}
+def display_results(user, computer)
+  if win?(user, computer)
+    prompt("You won!")
+  elsif win?(computer, user)
+    prompt("Computer won!")
+  else
+    prompt("It's a tie!")
+  end
+end
 
-prompt("Welcome to Rock, Paper, Scissors!")
+prompt("Welcome to RPS!")
 
 loop do
-  prompt("Enter r) for rock, p) for paper or s) for scissors.")
-  user_selection = gets.chomp.to_sym
-  comp_selection = ['r', 'p', 's'].sample.to_sym
+  user = ''
 
-  user_selection_name = selections[user_selection]
-  comp_selection_name = selections[comp_selection]
-  results_message = results[user_selection][comp_selection]
+  loop do
+    prompt("Choose one: #{VALID_CHOICES.join(', ')}")
+    user = gets.chomp
+    break if VALID_CHOICES.include?(user)
+  end
 
-  prompt("Your selection: #{user_selection_name}.")
-  prompt("Computer selection: #{comp_selection_name}.")
-  prompt(results_message)
+  comp = %w(rock paper scissors).sample
 
-  puts
+  prompt("Your selection: #{user}.")
+  prompt("Computer selection: #{comp}.")
+
+  display_results(user, comp)
 
   prompt("Would you like to play again?")
   answer = gets.chomp
