@@ -1,13 +1,19 @@
-VALID_CHOICES = %w(rock paper scissors)
+VALID_CHOICES = %w(rock paper scissors spock lizard)
+
+WIN_CONDITIONS = {
+  'rock' => ['scissors', 'lizard'],
+  'paper' => ['rock', 'spock'],
+  'scissors' => ['paper', 'lizard'],
+  'spock' => ['rock', 'scissors'],
+  'lizard' => ['spock', 'paper']
+}
 
 def prompt(message)
   puts "=> #{message}"
 end
 
 def win?(first, second)
-  (first == 'rock') && (second == 'scissors') ||
-    (first == 'paper') && (second == 'rock') ||
-    (first == 'scissors') && (second == 'paper')
+  WIN_CONDITIONS[first].include?(second)
 end
 
 def display_results(user, computer)
@@ -20,18 +26,18 @@ def display_results(user, computer)
   end
 end
 
-prompt("Welcome to RPS!")
+prompt("Welcome to Rock, Paper, Scissors, Spock, Lizard!")
 
 loop do
   user = ''
 
   loop do
-    prompt("Choose one: #{VALID_CHOICES.join(', ')}")
+    prompt("Choose one: #{VALID_CHOICES.join(', ')}.")
     user = gets.chomp
     break if VALID_CHOICES.include?(user)
   end
 
-  comp = %w(rock paper scissors).sample
+  comp = VALID_CHOICES.sample
 
   prompt("Your selection: #{user}.")
   prompt("Computer selection: #{comp}.")
