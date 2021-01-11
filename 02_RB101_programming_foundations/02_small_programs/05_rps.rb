@@ -8,6 +8,14 @@ WIN_CONDITIONS = {
   'lizard' => ['spock', 'paper']
 }
 
+FULL_NAMES = {
+  'r' => 'rock',
+  'p' => 'paper',
+  's' => 'scissors',
+  'sp' => 'spock',
+  'l' => 'lizard'
+}
+
 def prompt(message)
   puts "=> #{message}"
 end
@@ -32,8 +40,8 @@ loop do
   user = ''
 
   loop do
-    prompt("Choose one: #{VALID_CHOICES.join(', ')}.")
-    user = gets.chomp
+    prompt("Choose one: r for Rock, p for paper, s for scissors, sp for spock, l for lizard.")
+    user = FULL_NAMES[gets.chomp]
     break if VALID_CHOICES.include?(user)
   end
 
@@ -41,7 +49,6 @@ loop do
 
   prompt("Your selection: #{user}.")
   prompt("Computer selection: #{comp}.")
-
   display_results(user, comp)
 
   prompt("Would you like to play again?")
