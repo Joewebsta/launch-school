@@ -28,28 +28,27 @@
 
 # C - Code with intent
 
-ENDINGS = {
-  '1' => 'st',
-  '2' => 'nd',
-  '3' => 'rd'
-}
-ENDINGS.default = 'th'
-
 def century_num(year)
-  return (year / 100) if (year % 100).zero?
-  (year + 100) / 100
+  century_num = (year + 100) / 100
+  century_num -= 1 if (year % 100).zero?
+  century_num
 end
 
 def century_ending(century_num)
-  last_two_num = century_num.slice(-2, 2)
+  return 'th' if [11, 12, 13].include?(century_num % 100)
 
-  return 'th' if %w(11 12 13).include?(last_two_num)
+  last_digit = century_num % 10
 
-  ENDINGS[century_num[-1]]
+  case last_digit
+  when 1 then 'st'
+  when 2 then 'nd'
+  when 3 then 'rd'
+  else 'th'
+  end
 end
 
 def century(year)
-  century_num = century_num(year).to_s
+  century_num = century_num(year)
   century_ending = century_ending(century_num)
   "#{century_num}#{century_ending}"
 end
