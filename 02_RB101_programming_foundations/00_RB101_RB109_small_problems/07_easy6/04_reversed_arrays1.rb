@@ -21,17 +21,13 @@
 #   b. All elements have been swapped
 
 def reverse!(arr)
-  return arr if arr.size <= 1
+  left_index = 0
+  right_index = -1
 
-  swap_count = arr.size / 2
-  first = 0
-  last = -1
-
-  while swap_count > 0
-    arr[first], arr[last] = arr[last], arr[first]
-    first += 1
-    last -= 1
-    swap_count -= 1
+  while left_index < arr.size / 2
+    arr[left_index], arr[right_index] = arr[right_index], arr[left_index]
+    left_index += 1
+    right_index -= 1
   end
 
   arr
