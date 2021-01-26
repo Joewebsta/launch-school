@@ -1,16 +1,5 @@
 def find_dup(arr)
-  #  Loop through elements
-  #  Return true if count(elem) is == 2
-  # p(arr.filter { |elem| arr.count(elem) == 2 }.uniq.to_i)
-  sorted_arr = arr.sort
-
-  # dup_elem = ''
-
-  sorted_arr.each.with_index do |elem, i|
-    return elem if elem == sorted_arr[i + 1]
-    # p arr[i + 1]
-    # p "#{i}: #{elem}"
-  end
+  arr.find { |elem| arr.count(elem) == 2 }
 end
 
 p find_dup([1, 5, 3, 1]) == 1
