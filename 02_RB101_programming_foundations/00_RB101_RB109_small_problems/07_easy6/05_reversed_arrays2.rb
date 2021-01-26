@@ -5,15 +5,9 @@
 # Return reversed array
 
 def reverse(arr)
-  reversed_arr = []
-  right_index = -1
-
-  while reversed_arr.size != arr.size
-    reversed_arr << arr[right_index]
-    right_index -= 1
+  arr.reverse_each.each_with_object([]) do |elem, reversed_arr|
+    reversed_arr << elem
   end
-
-  reversed_arr
 end
 
 p reverse([1, 2, 3, 4]) == [4, 3, 2, 1] # => true
