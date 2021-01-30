@@ -1,18 +1,3 @@
-# def sum_of_sums(numbers)
-# sum = 0
-# counter = 1
-
-# loop do
-#   break if counter > numbers.size
-
-#   sum += numbers.first(counter).sum
-#   counter += 1
-# end
-
-# sum
-
-# end
-
 def sum_of_sums(numbers)
   sum_total = 0
 
