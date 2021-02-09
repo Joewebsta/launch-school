@@ -1,3 +1,9 @@
+WINNING_LINES = [
+  [1, 2, 3], [4, 5, 6], [7, 8, 9],
+  [1, 4, 7], [2, 5, 8], [3, 6, 9],
+  [1, 5, 9], [3, 5, 7]
+]
+
 INITIAL_MARKER = " "
 PLAYER_MARKER = "X"
 COMPUTER_MARKER = "O"
@@ -35,7 +41,7 @@ def player_places_piece!(board)
   square = ''
 
   loop do
-    prompt("Choose a square #{empty_squares(board).join(', ')}:")
+    prompt("Choose a square: #{joinor(empty_squares(board))}.")
     square = gets.chomp.to_i
     break if empty_squares(board).include?(square)
     prompt("Sorry, that's not a valid choice.")
@@ -58,17 +64,20 @@ def someone_won?(board)
 end
 
 def detect_winner(board)
-  winning_lines = [
-    [1, 2, 3], [4, 5, 6], [7, 8, 9],
-    [1, 4, 7], [2, 5, 8], [3, 6, 9],
-    [1, 5, 9], [3, 5, 7]
-  ]
-
-  winning_lines.each do |line|
+  WINNING_LINES.each do |line|
     return 'Player' if line.all? { |square| board[square] == PLAYER_MARKER }
     return 'Computer' if line.all? { |square| board[square] == COMPUTER_MARKER }
   end
   nil
+end
+
+def joinor(empty_squares, delimiter=', ', last_item_separator='or')
+  return empty_squares[0] if empty_squares.size == 1
+
+  delimiter = ' ' if empty_squares.size == 2
+
+  empty_squares_str = empty_squares.join(delimiter)
+  empty_squares_str.insert(-2, "#{last_item_separator} ")
 end
 
 loop do
