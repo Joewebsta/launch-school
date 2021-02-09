@@ -52,19 +52,40 @@ def board_full?(board)
   empty_squares(board).empty?
 end
 
-def someone_won?(_board)
-  false
+def someone_won?(board)
+  !!detect_winner(board)
+end
+
+def detect_winner(board)
+  winning_lines = [
+    [1, 2, 3], [4, 5, 6], [7, 8, 9],
+    [1, 4, 7], [2, 5, 8], [3, 6, 9],
+    [1, 5, 9], [3, 5, 7]
+  ]
+
+  winning_lines.each do |line|
+    return 'Player' if line.all? { |square| board[square] == PLAYER_MARKER }
+    return 'Computer' if line.all? { |square| board[square] == COMPUTER_MARKER }
+  end
+  nil
 end
 
 board = initialize_board
-display_board(board)
 
 loop do
-  player_places_piece!(board)
-  computer_places_piece!(board)
   display_board(board)
 
+  player_places_piece!(board)
+  break if someone_won?(board) || board_full?(board)
+
+  computer_places_piece!(board)
   break if someone_won?(board) || board_full?(board)
 end
 
 display_board(board)
+
+if someone_won?(board)
+  prompt "#{detect_winner(board)} won!"
+else
+  prompt("It's a tie!")
+end
