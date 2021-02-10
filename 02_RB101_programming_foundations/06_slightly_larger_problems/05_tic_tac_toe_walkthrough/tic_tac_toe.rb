@@ -72,12 +72,14 @@ def detect_winner(board)
 end
 
 def joinor(empty_squares, delimiter=', ', last_item_separator='or')
-  return empty_squares[0] if empty_squares.size == 1
-
-  delimiter = ' ' if empty_squares.size == 2
-
-  empty_squares_str = empty_squares.join(delimiter)
-  empty_squares_str.insert(-2, "#{last_item_separator} ")
+  case empty_squares.size
+  when 0 then ''
+  when 1 then empty_squares[0]
+  when 2 then empty_squares.join(" #{last_item_separator} ")
+  else
+    empty_squares[-1] = "#{last_item_separator} #{empty_squares[-1]}"
+    empty_squares.join(delimiter)
+  end
 end
 
 loop do
