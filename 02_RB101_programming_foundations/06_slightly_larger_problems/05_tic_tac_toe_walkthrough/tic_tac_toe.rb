@@ -63,11 +63,11 @@ def board_full?(board)
   empty_squares(board).empty?
 end
 
-def someone_won?(board)
-  !!detect_winner(board)
+def someone_won_round?(board)
+  !!detect_round_winner(board)
 end
 
-def detect_winner(board)
+def detect_round_winner(board)
   WINNING_LINES.each do |line|
     return 'Player' if line.all? { |square| board[square] == PLAYER_MARKER }
     return 'Computer' if line.all? { |square| board[square] == COMPUTER_MARKER }
@@ -87,13 +87,21 @@ def joinor(empty_squares, delimiter=', ', last_item_separator='or')
 end
 
 def update_scores(board, scores)
-  winner = detect_winner(board).downcase
+  winner = detect_round_winner(board).downcase
 
   if winner == 'player'
     scores[:player] += 1
   else
     scores[:computer] += 1
   end
+end
+
+def someone_won_game?(scores)
+  !!scores.values.any? { |score| score == 5 }
+end
+
+def detect_game_winner(scores)
+  scores.find { |_player, score| score == 5 }.first.capitalize
 end
 
 puts
@@ -117,10 +125,10 @@ loop do
       display_board(board, scores, round)
 
       player_places_piece!(board)
-      break if someone_won?(board) || board_full?(board)
+      break if someone_won_round?(board) || board_full?(board)
 
       computer_places_piece!(board)
-      break if someone_won?(board) || board_full?(board)
+      break if someone_won_round?(board) || board_full?(board)
     end
 
     update_scores(board, scores)
@@ -128,20 +136,32 @@ loop do
 
     # Display winner
     puts
-    if someone_won?(board)
-      prompt "#{detect_winner(board)} scores a point!"
+    if someone_won_round?(board)
+      prompt "#{detect_round_winner(board)} wins the round and scores a point!"
     else
       prompt("It's a tie! No points are awarded.")
     end
 
+    # Check for game winner
+    break if someone_won_game?(scores)
+
+    # Play again
     puts
     prompt "Press 'enter' to play round #{round + 1}."
     gets.chomp
   end
+
+  # Display winner
+  winner = detect_game_winner(scores)
+  puts
+  prompt "#{winner} won five rounds and wins the game!"
+
+  # Play again
+  puts
+  prompt "Play again? (y or n)"
+  answer = gets.chomp
+  break unless answer.downcase.start_with?('y')
 end
 
-# prompt "Play again? (y or n)"
-# answer = gets.chomp
-# break unless answer.downcase.start_with?('y')
-
+puts
 prompt "Thanks for playing Tic Tac Toe! Goodbye."
