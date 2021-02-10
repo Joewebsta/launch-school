@@ -16,9 +16,10 @@ def initialize_board
   (1..9).each_with_object({}) { |num, board| board[num] = INITIAL_MARKER }
 end
 
-def display_board(board)
+def display_board(board, scores)
   system "clear"
   puts "You're a #{PLAYER_MARKER}. Computer is #{COMPUTER_MARKER}."
+  puts "Player score: #{scores[:player]}. Computer score: #{scores[:computer]}."
   puts ""
   puts "     |     |"
   puts "  #{board[1]}  |  #{board[2]}  |  #{board[3]}"
@@ -82,11 +83,23 @@ def joinor(empty_squares, delimiter=', ', last_item_separator='or')
   end
 end
 
+def update_scores(board, scores)
+  winner = detect_winner(board).downcase
+
+  if winner == 'player'
+    scores[:player] += 1
+  else
+    scores[:computer] += 1
+  end
+end
+
 loop do
   board = initialize_board
+  scores = { player: 0, computer: 0 }
 
+  # Place pieces until player/comp wins or board is full
   loop do
-    display_board(board)
+    display_board(board, scores)
 
     player_places_piece!(board)
     break if someone_won?(board) || board_full?(board)
@@ -95,8 +108,10 @@ loop do
     break if someone_won?(board) || board_full?(board)
   end
 
-  display_board(board)
+  update_scores(board, scores)
+  display_board(board, scores)
 
+  # Display winner
   if someone_won?(board)
     prompt "#{detect_winner(board)} won!"
   else
