@@ -4,12 +4,6 @@ WINNING_LINES = [
   [1, 5, 9], [3, 5, 7]
 ]
 
-IMMEDIATE_THREATS = [
-  [1, 2], [2, 3], [4, 5], [5, 6], [7, 8], [8, 9], # Horizontal
-  [1, 4], [4, 7], [2, 5], [5, 8], [3, 6], [6, 9], # Vertical
-  [1, 5], [5, 7], [3, 5], [5, 7] # Diagonal
-]
-
 INITIAL_MARKER = " "
 PLAYER_MARKER = "X"
 COMPUTER_MARKER = "O"
@@ -61,24 +55,29 @@ def player_places_piece!(board)
 end
 
 def computer_places_piece!(board)
-  if immediate_threats?(board)
-    place_piece_defensively(board)
-  else
-    square = empty_squares(board).sample
-    board[square] = COMPUTER_MARKER
+  square = nil
+  WINNING_LINES.each do |line|
+    square = find_at_risk_square(line, board)
+    break if square
   end
+
+  if !square
+    square = empty_squares(board).sample
+  end
+
+  board[square] = COMPUTER_MARKER
 end
 
-def immediate_threats?(board)
-  player_squares = board.select { |_square, piece| piece == 'X' }.keys
-  two_square_combinations = player_squares.combination(2).to_a
-  !!two_square_combinations.any? { |combo| IMMEDIATE_THREATS.include?(combo) }
-end
+def find_at_risk_square(line, board)
+  if board.values_at(*line).count('X') == 2
+    at_risk_square = board.select do |square, marker|
+      line.include?(square) && marker == ' '
+    end
 
-def place_piece_defensively(board)
-  # Determine if there are any immediate threats (2 adjacent squares with x's) - COULD BE MULTIPLE
-  # Determine third square
-  # Place 0 in third square
+    return at_risk_square.keys[0]
+  end
+
+  nil
 end
 
 def board_full?(board)
@@ -109,12 +108,11 @@ def joinor(empty_squares, delimiter=', ', last_item_separator='or')
 end
 
 def update_scores(board, scores)
-  winner = detect_round_winner(board).downcase
+  winner = detect_round_winner(board)
 
-  if winner == 'player'
-    scores[:player] += 1
-  else
-    scores[:computer] += 1
+  case winner
+  when 'Player' then scores[:player] += 1
+  when 'Computer' then scores[:computer] += 1
   end
 end
 
