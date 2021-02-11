@@ -4,6 +4,12 @@ WINNING_LINES = [
   [1, 5, 9], [3, 5, 7]
 ]
 
+IMMEDIATE_THREATS = [
+  [1, 2], [2, 3], [4, 5], [5, 6], [7, 8], [8, 9], # Horizontal
+  [1, 4], [4, 7], [2, 5], [5, 8], [3, 6], [6, 9], # Vertical
+  [1, 5], [5, 7], [3, 5], [5, 7] # Diagonal
+]
+
 INITIAL_MARKER = " "
 PLAYER_MARKER = "X"
 COMPUTER_MARKER = "O"
@@ -55,8 +61,24 @@ def player_places_piece!(board)
 end
 
 def computer_places_piece!(board)
-  square = empty_squares(board).sample
-  board[square] = COMPUTER_MARKER
+  if immediate_threats?(board)
+    place_piece_defensively(board)
+  else
+    square = empty_squares(board).sample
+    board[square] = COMPUTER_MARKER
+  end
+end
+
+def immediate_threats?(board)
+  player_squares = board.select { |_square, piece| piece == 'X' }.keys
+  two_square_combinations = player_squares.combination(2).to_a
+  !!two_square_combinations.any? { |combo| IMMEDIATE_THREATS.include?(combo) }
+end
+
+def place_piece_defensively(board)
+  # Determine if there are any immediate threats (2 adjacent squares with x's) - COULD BE MULTIPLE
+  # Determine third square
+  # Place 0 in third square
 end
 
 def board_full?(board)
