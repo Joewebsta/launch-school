@@ -7,6 +7,7 @@ WINNING_LINES = [
 INITIAL_MARKER = " "
 PLAYER_MARKER = "X"
 COMPUTER_MARKER = "O"
+FIRST_MOVE = "player"
 
 def prompt(msg)
   puts "=> #{msg}"
@@ -38,6 +39,14 @@ end
 
 def empty_squares(board)
   board.keys.select { |num| board[num] == INITIAL_MARKER }
+end
+
+def place_piece!(board, current_player)
+  if current_player == 'player'
+    player_places_piece!(board)
+  else
+    computer_places_piece!(board)
+  end
 end
 
 def player_places_piece!(board)
@@ -138,6 +147,10 @@ def detect_game_winner(scores)
   scores.find { |_player, score| score == 5 }.first.capitalize
 end
 
+def alternate_player(current_player)
+  current_player == 'player' ? 'computer' : 'player'
+end
+
 puts
 puts "**** Welcome to Tic Tac Toe! **** "
 puts
@@ -151,17 +164,14 @@ loop do
   round = 0
 
   loop do
+    current_player = FIRST_MOVE
     round += 1
     board = initialize_board
 
-    # Place pieces until player/comp wins or board is full
     loop do
       display_board(board, scores, round)
-
-      player_places_piece!(board)
-      break if someone_won_round?(board) || board_full?(board)
-
-      computer_places_piece!(board)
+      place_piece!(board, current_player)
+      current_player = alternate_player(current_player)
       break if someone_won_round?(board) || board_full?(board)
     end
 
