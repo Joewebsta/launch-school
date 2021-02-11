@@ -71,6 +71,10 @@ def computer_places_piece!(board)
     end
   end
 
+  if !square && (board[5] == ' ')
+    square = 5
+  end
+
   if !square
     square = empty_squares(board).sample
   end
