@@ -151,6 +151,22 @@ def alternate_player(current_player)
   current_player == 'player' ? 'computer' : 'player'
 end
 
+def choose_player
+  loop do
+    puts
+    prompt "Who would you like to choose first?"
+    prompt "Press 'p' for player and 'c' for computer."
+    answer = gets.chomp.downcase
+    if answer.start_with?('p')
+      return 'player'
+    elsif answer.start_with?('c')
+      return 'computer'
+    else
+      prompt 'Sorry. That is an invalid answer.'
+    end
+  end
+end
+
 puts
 puts "**** Welcome to Tic Tac Toe! **** "
 puts
@@ -165,6 +181,12 @@ loop do
 
   loop do
     current_player = FIRST_MOVE
+    current_player = choose_player if current_player == 'choose'
+    # if first_move is 'choose'
+    # prompt user for current player selection
+    # if p -> set current player to 'player
+    # if c -> set current player to 'computer'
+    # if neither, tell user invalid answer and have them provide another answer
     round += 1
     board = initialize_board
 
