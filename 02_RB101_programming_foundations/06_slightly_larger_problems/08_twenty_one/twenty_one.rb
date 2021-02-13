@@ -13,14 +13,23 @@ def create_cards(suit)
   end
 end
 
-deck = create_cards('S') + create_cards('D') + create_cards('C') + create_cards('H')
+def prompt(msg)
+  "=> #{msg}"
+end
 
-p deck
+def deal_cards(deck, participant)
+  if participant[:cards].empty?
+    participant[:cards].concat(deck.shift(2))
+  else
+    participant[:cards] << deck.shift
+  end
+end
 
-# player = {
-#   cards: []
-# }
+deck = (create_cards('S') + create_cards('D') + create_cards('C') + create_cards('H')).shuffle
+player = { cards: [] }
+dealer = { cards: [] }
 
-# dealer = {
-#   cards: []
-# }
+prompt "Welcome to Twenty-One!"
+
+deal_cards(deck, player)
+deal_cards(deck, dealer)
