@@ -1,27 +1,21 @@
+def sum_aces(aces, tot_value)
+  total = tot_value
+  aces.reduce(total) { |tot| tot + (tot <= 10 ? 11 : 1) }
+end
+
+def sum_non_aces(values, tot_value)
+  total = tot_value
+  values.reduce(total) do |tot, value|
+    tot + (["J", "Q", "K"].include?(value) ? 10 : value.to_i)
+  end
+end
+
 def calc_hand_value(cards)
   values = cards.map { |_suit, val| val }
   aces, values = values.partition { |val| val == "A" }
 
   tot_value = 0
-
-  values.each do |value|
-    if ["J", "Q", "K"].include?(value)
-      tot_value += 10
-    else
-      tot_value += value.to_i
-    end
-  end
-
-  aces.each do
-    if tot_value <= 10
-      tot_value += 11
-    else
-      tot_value += 1
-    end
-  end
-
-  tot_value
-  # require 'pry'; binding.pry
+  sum_aces(aces, sum_non_aces(values, tot_value))
 end
 
 p calc_hand_value([["H", "A"], ["C", "A"], ["C", "A"], ["C", "A"]]) == 14
