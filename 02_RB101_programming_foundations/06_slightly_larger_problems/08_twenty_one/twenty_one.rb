@@ -37,21 +37,27 @@ def sum_aces(aces, tot_value)
 end
 
 def calc_hand_value(cards)
-  # require 'pry'; binding.pry
-  # values = cards.map { |_suit, val| val }
   aces, values = cards.partition { |val| val == "A" }
   sum_aces(aces, sum_non_aces(values))
 end
 
-def display_player_cards(player)
-  cards = player[:cards].map(&:last)
-  formatted_cards = format_card_values(cards)
+def display_cards(participant)
+  cards = participant[:cards].map(&:last)
+  formatted_cards = format_card_values(cards, participant)
   total = calc_hand_value(cards)
 
-  prompt "You have: #{formatted_cards}. Total: #{total}."
+  if participant[:name] == "Player"
+    prompt "You have: #{formatted_cards}. Total: #{total}."
+  else
+    prompt "Dealer has: #{formatted_cards}."
+  end
 end
 
-def format_card_values(cards)
+def format_card_values(cards, participant)
+  if participant[:name] == 'Dealer'
+    cards = cards[1..-1] << "an unknown card"
+  end
+
   if cards.size == 2
     cards.join(' and ')
   else
@@ -83,12 +89,13 @@ puts "Welcome to Twenty-One!"
 deck = (create_cards('S') + create_cards('D') +
         create_cards('C') + create_cards('H')).shuffle
 
-player = { cards: [] }
-dealer = { cards: [] }
+player = { name: "Player", cards: [] }
+dealer = { name: "Dealer", cards: [] }
 
 deal_cards(deck, player)
 deal_cards(deck, dealer)
-display_player_cards(player)
+display_cards(dealer)
+display_cards(player)
 
 # loop do
 #   player_turn(deck, player)
