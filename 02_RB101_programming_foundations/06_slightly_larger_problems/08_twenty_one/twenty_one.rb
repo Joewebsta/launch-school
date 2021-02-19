@@ -36,7 +36,8 @@ def sum_aces(aces, tot_value)
   aces.reduce(total) { |tot| tot + (tot <= 10 ? 11 : 1) }
 end
 
-def calc_hand_value(cards)
+def calc_hand_value(participant)
+  cards = participant[:cards].map { |_suit, value| value }
   aces, values = cards.partition { |val| val == "A" }
   sum_aces(aces, sum_non_aces(values))
 end
@@ -44,7 +45,7 @@ end
 def display_cards(participant)
   cards = participant[:cards].map(&:last)
   formatted_cards = format_card_values(cards, participant)
-  total = calc_hand_value(cards)
+  total = calc_hand_value(participant)
 
   if participant[:name] == "Player"
     prompt "You have: #{formatted_cards}. Total: #{total}."
@@ -70,6 +71,16 @@ def hit(deck, player)
   player[:cards] << deck.shift
 end
 
+def busted?(participant)
+  total = calc_hand_value(participant)
+  if total > 21
+    prompt 'You busted loser!'
+    true
+  else
+    false
+  end
+end
+
 # MAIN LOGIC
 puts "Welcome to Twenty-One!"
 
@@ -87,9 +98,9 @@ display_cards(player)
 loop do
   prompt "'hit' or 'stay'? ('h' for hit. 's' for stay.)"
   action = gets.chomp
-  break if action.start_with?('s')
-
   hit(deck, player)
   display_cards(player)
+  break if action.start_with?('s') || busted?(player)
+
   # prompt "Sorry, that is an invalid answer."
 end
