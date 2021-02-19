@@ -50,14 +50,14 @@ def display_cards(participant)
   if participant[:name] == "Player"
     prompt "You have: #{formatted_cards}. Total: #{total}."
   else
-    prompt "Dealer has: #{formatted_cards}."
+    prompt "Dealer has: #{formatted_cards}. Total: #{total}"
   end
 end
 
-def format_card_values(cards, participant)
-  if participant[:name] == 'Dealer'
-    cards = cards[1..-1] << "an unknown card"
-  end
+def format_card_values(cards, _participant)
+  # if participant[:name] == 'Dealer'
+  #   cards = cards[1..-1] << "an unknown card"
+  # end
 
   if cards.size == 2
     cards.join(' and ')
@@ -76,42 +76,97 @@ def busted?(participant)
   total > 21
 end
 
-# MAIN LOGIC
-puts "Welcome to Twenty-One!"
-
-deck = (create_cards('S') + create_cards('D') +
-        create_cards('C') + create_cards('H')).shuffle
-
-player = { name: "Player", cards: [] }
-dealer = { name: "Dealer", cards: [] }
-
-deal_cards(deck, player)
-deal_cards(deck, dealer)
-display_cards(dealer)
-display_cards(player)
-
-# Player turn
-loop do
-  action = nil
+def dealer_turn(dealer, deck)
+  display_cards(dealer)
 
   loop do
-    prompt "'hit' or 'stay'? ('h' for hit. 's' for stay.)"
-    action = gets.chomp
-    break if action.start_with?("h", "s")
-    prompt "Sorry, that's an invalid action."
+    total = calc_hand_value(dealer)
+    break if total >= 17
+
+    hit(deck, dealer)
+    prompt("The dealer choses to hit!")
+
+    break if busted?(dealer)
+
+    display_cards(dealer)
+  end
+end
+
+def play_again; end
+
+# MAIN LOGIC
+loop do
+  puts "****** TWENTY-ONE ******"
+  puts
+
+  deck = (create_cards('S') + create_cards('D') +
+          create_cards('C') + create_cards('H')).shuffle
+
+  player = { name: "Player", cards: [] }
+  dealer = { name: "Dealer", cards: [] }
+
+  deal_cards(deck, player)
+  deal_cards(deck, dealer)
+  display_cards(dealer)
+  display_cards(player)
+
+  # Player turn
+
+  puts
+  puts "***** PLAYER TURN *****"
+  puts
+
+  loop do
+    action = nil
+
+    loop do
+      prompt "'hit' or 'stay'? ('h' for hit. 's' for stay.)"
+      action = gets.chomp.downcase
+      break if action.start_with?("h", "s")
+      prompt "Sorry, that's an invalid action."
+    end
+
+    break if action.start_with?('s')
+
+    hit(deck, player)
+    break if busted?(player)
+
+    display_cards(player)
   end
 
-  hit(deck, player)
+  if busted?(player)
+    display_cards(player)
+    prompt "You busted! The dealer wins."
 
-  break if action.start_with?('s') || busted?(player)
-  display_cards(player)
+    prompt "Would you like to play again? ('y' or 'n')"
+    answer = gets.chomp.downcase
+    break if answer.start_with?('n')
+    system "clear"
+    next if answer.start_with?('y')
+  else
+    prompt "You chose to stay!"
+  end
+
+  # Dealer turn
+  puts
+  puts "***** DEALER TURN *****"
+  puts
+
+  dealer_turn(dealer, deck)
+
+  if busted?(dealer)
+    display_cards(dealer)
+    prompt "The dealer busted! You win!"
+  end
+
+  # prompt "Would you like to play again? ('y' or 'n')"
+  # answer = gets.chomp.downcase
+  # break if answer.start_with?('n')
+  # system "clear"
+  # next if answer.start_with?('y')
 end
 
-if busted?(player)
-  display_cards(player)
-  prompt "You busted! The dealer wins."
-else
-  prompt "You chose to stay!"
-end
+prompt "Thank you for playing Twenty-one!"
+# if busted?(dealer)
 
-# Dealer turn
+# display_cards(dealer)
