@@ -73,12 +73,7 @@ end
 
 def busted?(participant)
   total = calc_hand_value(participant)
-  if total > 21
-    prompt 'You busted loser!'
-    true
-  else
-    false
-  end
+  total > 21
 end
 
 # MAIN LOGIC
@@ -96,11 +91,23 @@ display_cards(dealer)
 display_cards(player)
 
 loop do
-  prompt "'hit' or 'stay'? ('h' for hit. 's' for stay.)"
-  action = gets.chomp
+  action = nil
+
+  loop do
+    prompt "'hit' or 'stay'? ('h' for hit. 's' for stay.)"
+    action = gets.chomp
+    break if action.start_with?("h", "s")
+    prompt "Sorry, that's an invalid action."
+  end
+
   hit(deck, player)
-  display_cards(player)
+
   break if action.start_with?('s') || busted?(player)
 
-  # prompt "Sorry, that is an invalid answer."
+  display_cards(player)
+
+  # if invalid answer loop
+  # if say break loop
+  # if busted break loop
+  # if hit -> hit and display cards
 end
