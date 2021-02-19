@@ -61,26 +61,13 @@ def format_card_values(cards, participant)
   if cards.size == 2
     cards.join(' and ')
   else
-    cards[-1] = "and #{cards.last}"
+    cards = cards[0..-2] << "and #{cards.last}"
     cards.join(', ')
   end
 end
 
 def hit(deck, player)
   player[:cards] << deck.shift
-end
-
-def player_turn(deck, player)
-  action = ''
-  loop do
-    prompt "Would you like to 'hit' or 'stay'?"
-    prompt "Press 'h' for hit or 's' for stay."
-    action = gets.chomp
-    break if action.start_with?('s', 'h')
-    prompt "Sorry, that is an invalid answer."
-  end
-
-  hit(deck, player) if action.start_with?('h')
 end
 
 # MAIN LOGIC
@@ -97,8 +84,12 @@ deal_cards(deck, dealer)
 display_cards(dealer)
 display_cards(player)
 
-# loop do
-#   player_turn(deck, player)
-#   display_player_cards(player)
-#   break if player[:cards].map { |card| card.last.to_i }.sum > 21
-# end
+loop do
+  prompt "'hit' or 'stay'? ('h' for hit. 's' for stay.)"
+  action = gets.chomp
+  break if action.start_with?('s')
+
+  hit(deck, player)
+  display_cards(player)
+  # prompt "Sorry, that is an invalid answer."
+end
