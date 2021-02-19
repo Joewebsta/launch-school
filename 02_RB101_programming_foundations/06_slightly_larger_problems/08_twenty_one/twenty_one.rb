@@ -92,11 +92,31 @@ def dealer_turn(dealer, deck)
   end
 end
 
-def play_again; end
+def winner(player, dealer)
+  player_tot = calc_hand_value(player)
+  dealer_tot = calc_hand_value(dealer)
+
+  if player_tot > dealer_tot
+    "player"
+  else
+    "dealer"
+  end
+end
+
+def display_winner(player, dealer)
+  player_tot = calc_hand_value(player)
+  dealer_tot = calc_hand_value(dealer)
+
+  prompt "Final total player: #{player_tot}."
+  prompt "Final total dealer: #{dealer_tot}."
+  prompt "#{winner(player, dealer).capitalize} is the winner!"
+  system "clear"
+end
 
 # MAIN LOGIC
 loop do
-  puts "****** TWENTY-ONE ******"
+  puts
+  puts "*-*-*-*-*-* TWENTY-ONE *-*-*-*-*-*"
   puts
 
   deck = (create_cards('S') + create_cards('D') +
@@ -157,6 +177,11 @@ loop do
   if busted?(dealer)
     display_cards(dealer)
     prompt "The dealer busted! You win!"
+    prompt "Would you like to play again? ('y' or 'n')"
+    answer = gets.chomp.downcase
+    break if answer.start_with?('n')
+    system "clear"
+    next if answer.start_with?('y')
   end
 
   # prompt "Would you like to play again? ('y' or 'n')"
@@ -164,6 +189,12 @@ loop do
   # break if answer.start_with?('n')
   # system "clear"
   # next if answer.start_with?('y')
+
+  puts
+  puts "***** RESULTS *****"
+  puts
+
+  display_winner(player, dealer)
 end
 
 prompt "Thank you for playing Twenty-one!"
