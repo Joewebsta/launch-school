@@ -90,6 +90,7 @@ deal_cards(deck, dealer)
 display_cards(dealer)
 display_cards(player)
 
+# Player turn
 loop do
   action = nil
 
@@ -103,11 +104,14 @@ loop do
   hit(deck, player)
 
   break if action.start_with?('s') || busted?(player)
-
   display_cards(player)
-
-  # if invalid answer loop
-  # if say break loop
-  # if busted break loop
-  # if hit -> hit and display cards
 end
+
+if busted?(player)
+  display_cards(player)
+  prompt "You busted! The dealer wins."
+else
+  prompt "You chose to stay!"
+end
+
+# Dealer turn
