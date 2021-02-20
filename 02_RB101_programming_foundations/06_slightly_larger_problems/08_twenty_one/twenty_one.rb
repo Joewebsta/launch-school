@@ -110,31 +110,37 @@ def display_winner(player, dealer)
   prompt "Final total player: #{player_tot}."
   prompt "Final total dealer: #{dealer_tot}."
   prompt "#{winner(player, dealer).capitalize} is the winner!"
-  system "clear"
+  # system "clear"
+end
+
+def into_header
+  puts
+  puts "*-*-*-*-*-* TWENTY-ONE *-*-*-*-*-*"
+  puts
+end
+
+def section_header(text)
+  puts
+  puts "***** #{text} *****"
+  puts
 end
 
 # MAIN LOGIC
 loop do
-  puts
-  puts "*-*-*-*-*-* TWENTY-ONE *-*-*-*-*-*"
-  puts
-
   deck = (create_cards('S') + create_cards('D') +
           create_cards('C') + create_cards('H')).shuffle
 
   player = { name: "Player", cards: [] }
   dealer = { name: "Dealer", cards: [] }
 
+  into_header
   deal_cards(deck, player)
   deal_cards(deck, dealer)
   display_cards(dealer)
   display_cards(player)
 
   # Player turn
-
-  puts
-  puts "***** PLAYER TURN *****"
-  puts
+  section_header("PLAYER TURN")
 
   loop do
     action = nil
@@ -157,47 +163,39 @@ loop do
   if busted?(player)
     display_cards(player)
     prompt "You busted! The dealer wins."
-
-    prompt "Would you like to play again? ('y' or 'n')"
-    answer = gets.chomp.downcase
-    break if answer.start_with?('n')
-    system "clear"
-    next if answer.start_with?('y')
   else
     prompt "You chose to stay!"
   end
 
   # Dealer turn
-  puts
-  puts "***** DEALER TURN *****"
-  puts
+  if !busted?(player)
+    section_header("DEALER TURN")
+    dealer_turn(dealer, deck)
 
-  dealer_turn(dealer, deck)
-
-  if busted?(dealer)
-    display_cards(dealer)
-    prompt "The dealer busted! You win!"
-    prompt "Would you like to play again? ('y' or 'n')"
-    answer = gets.chomp.downcase
-    break if answer.start_with?('n')
-    system "clear"
-    next if answer.start_with?('y')
+    if busted?(dealer)
+      display_cards(dealer)
+      prompt "The dealer busted! You win!"
+    end
   end
 
-  # prompt "Would you like to play again? ('y' or 'n')"
-  # answer = gets.chomp.downcase
-  # break if answer.start_with?('n')
-  # system "clear"
-  # next if answer.start_with?('y')
+  if !busted?(player) && !busted?(dealer)
+    section_header("RESULTS")
+    display_winner(player, dealer)
+  end
 
+  # Play again?
   puts
-  puts "***** RESULTS *****"
-  puts
+  answer = nil
+  loop do
+    prompt "Would you like to play again? ('y' or 'n')"
+    answer = gets.chomp.downcase
+    break if answer.start_with?("y", "n")
+    prompt "Sorry that is an invalid answer."
+  end
 
-  display_winner(player, dealer)
+  break if answer.start_with?('n')
+  system "clear"
+  next if answer.start_with?('y')
 end
 
 prompt "Thank you for playing Twenty-one!"
-# if busted?(dealer)
-
-# display_cards(dealer)
