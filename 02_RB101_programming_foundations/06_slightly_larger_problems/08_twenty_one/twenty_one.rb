@@ -44,7 +44,7 @@ end
 
 def display_cards(participant)
   cards = participant[:cards].map(&:last)
-  formatted_cards = format_card_values(cards, participant)
+  formatted_cards = format_card_values(cards)
   total = calc_hand_value(participant)
 
   if participant[:name] == "Player"
@@ -54,17 +54,19 @@ def display_cards(participant)
   end
 end
 
-def format_card_values(cards, _participant)
-  # if participant[:name] == 'Dealer'
-  #   cards = cards[1..-1] << "an unknown card"
-  # end
-
+def format_card_values(cards)
   if cards.size == 2
     cards.join(' and ')
   else
     cards = cards[0..-2] << "and #{cards.last}"
     cards.join(', ')
   end
+end
+
+def display_cards_unknown(dealer)
+  cards = dealer[:cards].map(&:last)
+  cards = (cards[0, 1] << "and an unknown card").join(' ')
+  prompt "Dealer has: #{cards}."
 end
 
 def hit(deck, player)
@@ -79,6 +81,7 @@ end
 def dealer_turn(dealer, deck)
   display_cards(dealer)
 
+  total = nil
   loop do
     total = calc_hand_value(dealer)
     break if total >= 17
@@ -90,6 +93,8 @@ def dealer_turn(dealer, deck)
 
     display_cards(dealer)
   end
+
+  prompt "The dealer chose to stay." if total >= 17
 end
 
 def winner(player, dealer)
@@ -109,11 +114,14 @@ def display_winner(player, dealer)
 
   prompt "Final total player: #{player_tot}."
   prompt "Final total dealer: #{dealer_tot}."
-  prompt "#{winner(player, dealer).capitalize} is the winner!"
-  # system "clear"
+  if player_tot == dealer_tot
+    prompt "Tie goes to the house. Dealer is the winner!"
+  else
+    prompt "#{winner(player, dealer).capitalize} is the winner!"
+  end
 end
 
-def into_header
+def intro_header
   puts
   puts "*-*-*-*-*-* TWENTY-ONE *-*-*-*-*-*"
   puts
@@ -133,10 +141,10 @@ loop do
   player = { name: "Player", cards: [] }
   dealer = { name: "Dealer", cards: [] }
 
-  into_header
+  intro_header
   deal_cards(deck, player)
   deal_cards(deck, dealer)
-  display_cards(dealer)
+  display_cards_unknown(dealer)
   display_cards(player)
 
   # Player turn
