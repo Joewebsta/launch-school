@@ -1,16 +1,20 @@
-def create_cards(suit)
-  2.upto(14).with_object([]) do |n, cards|
-    value = n.to_s
+def initialize_deck
+  deck = 2.upto(14).with_object([]) do |n, cards|
+    ["H", "D", "S", "C"].each do |suit|
+      value = n.to_s
 
-    case n
-    when 11 then value = 'J'
-    when 12 then value = 'Q'
-    when 13 then value = 'K'
-    when 14 then value = 'A'
+      case n
+      when 11 then value = 'J'
+      when 12 then value = 'Q'
+      when 13 then value = 'K'
+      when 14 then value = 'A'
+      end
+
+      cards << [suit, value]
     end
-
-    cards << [suit, value]
   end
+
+  deck.shuffle
 end
 
 def prompt(msg)
@@ -65,7 +69,7 @@ end
 
 def display_cards_unknown(dealer)
   cards = dealer[:cards].map(&:last)
-  cards = (cards[0, 1] << "and an unknown card").join(' ')
+  cards = ("#{cards[0]} and an unknown card")
   prompt "Dealer has: #{cards}."
 end
 
@@ -87,7 +91,7 @@ def dealer_turn(dealer, deck)
     break if total >= 17
 
     hit(deck, dealer)
-    prompt("The dealer choses to hit!")
+    prompt("Dealer hits!")
 
     break if busted?(dealer)
 
@@ -135,15 +139,15 @@ end
 
 # MAIN LOGIC
 loop do
-  deck = (create_cards('S') + create_cards('D') +
-          create_cards('C') + create_cards('H')).shuffle
+  intro_header
 
+  deck = initialize_deck
   player = { name: "Player", cards: [] }
   dealer = { name: "Dealer", cards: [] }
 
-  intro_header
   deal_cards(deck, player)
   deal_cards(deck, dealer)
+
   display_cards_unknown(dealer)
   display_cards(player)
 
@@ -164,7 +168,6 @@ loop do
 
     hit(deck, player)
     break if busted?(player)
-
     display_cards(player)
   end
 
