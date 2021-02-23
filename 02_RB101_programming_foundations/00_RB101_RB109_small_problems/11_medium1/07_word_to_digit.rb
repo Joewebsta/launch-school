@@ -13,8 +13,8 @@ NUMBERS = {
 
 def word_to_digit(string)
   converted_string = string.split.map do |word|
-    if NUMBERS.key?(word) || NUMBERS.key?(word.slice(0..-2))
-      word.end_with?('.') ? "#{NUMBERS[word.slice(0..-2)]}." : NUMBERS[word]
+    if NUMBERS.key?(word) || NUMBERS.key?(word[0..-2])
+      word.end_with?('.') ? "#{NUMBERS[word[0..-2]]}." : NUMBERS[word]
     else
       word
     end
