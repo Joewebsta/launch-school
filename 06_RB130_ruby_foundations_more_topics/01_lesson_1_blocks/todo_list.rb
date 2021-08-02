@@ -75,7 +75,21 @@ class TodoList
     todos.all? { |todo| todo.done == true }
   end
 
-  def 
+  def item_at(pos)
+    todos[pos]
+  end
+
+  def mark_done_at(pos)
+    todos[pos].done!
+  end
+
+  def mark_undone_at(pos)
+    todos[pos].undone!
+  end
+
+  def done!
+    todos.each(&:done!)
+  end
 
   private
 
@@ -90,13 +104,30 @@ list = TodoList.new("Today's Todos")
 list.add(todo1)                 # adds todo1 to end of list, returns list
 list.add(todo2)                 # adds todo2 to end of list, returns list
 list.add(todo3)                 # adds todo3 to end of list, returns list
-list.add(1)
+# list.add(1)
 
 # p list.size
 # p list.first
 # p list.last
 # p list.to_a
 # p list.done?
+
+# p list.item_at
+# p list.item_at(1)
+# p list.item_at(100)
+
+# list.mark_done_at
+# list.mark_done_at(1)
+# list.mark_done_at(0)
+# p list
+# list.mark_done_at(100)
+
+# list.mark_undone_at(1)
+# list.mark_undone_at(0)
+# p list
+
+list.done!
+p list.done?
 
 # TODO
 # Add type error for adding todo of wrong class
