@@ -55,6 +55,8 @@ class TodoList
     @todos << todo if todo.instance_of? Todo
   end
 
+  alias << add
+
   def size
     todos.size
   end
@@ -91,6 +93,23 @@ class TodoList
     todos.each(&:done!)
   end
 
+  def shift
+    todos.shift
+  end
+
+  def pop
+    todos.pop
+  end
+
+  def remove_at(pos)
+    todos.delete_at(pos)
+  end
+
+  def to_s
+    puts "---- #{title} ----"
+    todos.each { |todo| puts todo }
+  end
+
   private
 
   attr_reader :todos
@@ -101,8 +120,8 @@ todo2 = Todo.new("Clean room")
 todo3 = Todo.new("Go to gym")
 list = TodoList.new("Today's Todos")
 
-list.add(todo1)                 # adds todo1 to end of list, returns list
-list.add(todo2)                 # adds todo2 to end of list, returns list
+list << (todo1) # adds todo1 to end of list, returns list
+list << (todo2)                 # adds todo2 to end of list, returns list
 list.add(todo3)                 # adds todo3 to end of list, returns list
 # list.add(1)
 
@@ -127,7 +146,17 @@ list.add(todo3)                 # adds todo3 to end of list, returns list
 # p list
 
 list.done!
-p list.done?
+# p list.done?
+
+# list.shift
+# list.pop
+
+# list.remove_at
+# list.remove_at(0)
+# list.remove_at(100)
+# p list
+
+list.to_s
 
 # TODO
 # Add type error for adding todo of wrong class
