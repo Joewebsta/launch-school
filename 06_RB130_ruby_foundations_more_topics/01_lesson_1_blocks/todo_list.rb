@@ -49,10 +49,10 @@ class TodoList
     @todos = []
   end
 
-  # rest of class needs implementation
-
   def add(todo)
-    @todos << todo if todo.instance_of? Todo
+    raise TypeError, 'can only add Todo objects' unless todo.instance_of? Todo
+
+    todos << todo
   end
 
   alias << add
@@ -70,23 +70,23 @@ class TodoList
   end
 
   def to_a
-    todos.map(&:title)
+    todos.clone
   end
 
   def done?
-    todos.all? { |todo| todo.done == true }
+    todos.all?(&:done?)
   end
 
   def item_at(pos)
-    todos[pos]
+    todos.fetch(pos)
   end
 
   def mark_done_at(pos)
-    todos[pos].done!
+    item_at(pos).done!
   end
 
   def mark_undone_at(pos)
-    todos[pos].undone!
+    item_at(pos).undone!
   end
 
   def done!
@@ -102,7 +102,7 @@ class TodoList
   end
 
   def remove_at(pos)
-    todos.delete_at(pos)
+    todos.delete(item_at(pos))
   end
 
   def to_s
@@ -121,9 +121,8 @@ todo3 = Todo.new("Go to gym")
 list = TodoList.new("Today's Todos")
 
 list << (todo1) # adds todo1 to end of list, returns list
-list << (todo2)                 # adds todo2 to end of list, returns list
-list.add(todo3)                 # adds todo3 to end of list, returns list
-# list.add(1)
+list << (todo2) # adds todo2 to end of list, returns list
+list.add(todo3) # adds todo3 to end of list, returns list
 
 # p list.size
 # p list.first
@@ -145,20 +144,15 @@ list.add(todo3)                 # adds todo3 to end of list, returns list
 # list.mark_undone_at(0)
 # p list
 
-list.done!
+# list.done!
 # p list.done?
 
-# list.shift
-# list.pop
+# p list.shift
+# p list.pop
 
 # list.remove_at
-# list.remove_at(0)
+# p list.remove_at(0)
 # list.remove_at(100)
 # p list
 
-list.to_s
-
-# TODO
-# Add type error for adding todo of wrong class
-# How to create alias methods for << and add
-# How to create Argument error for item_at method + mark_done_at + mark done at
+# list.to_s
