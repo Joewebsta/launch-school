@@ -35,6 +35,10 @@ class Todo
       description == other_todo.description &&
       done == other_todo.done
   end
+
+  def title_matches?(other_title)
+    title.downcase.include?(other_title.downcase)
+  end
 end
 
 # This class represents a collection of Todo objects.
@@ -116,13 +120,46 @@ class TodoList
   end
 
   def select
-    temp_list = TodoList.new(title)
+    list = TodoList.new(title)
 
-    todos.each do |todo|
-      temp_list << todo if yield(todo)
+    each do |todo|
+      list << todo if yield(todo)
     end
 
-    temp_list
+    list
+  end
+
+  def find_by_title(title)
+    select do |todo|
+      return todo if todo.title_matches?(title)
+    end
+  end
+
+  def all_done
+    select(&:done?)
+  end
+
+  def all_not_done
+    select { |todo| !todo.done? }
+  end
+
+  def mark_done(title)
+    each do |todo|
+      if todo.title_matches?(title) && !todo.done?
+        todo.done!
+        return todo
+      end
+    end
+
+    nil
+  end
+
+  def mark_all_done
+    each(&:done!)
+  end
+
+  def mark_all_undone
+    each(&:undone!)
   end
 
   private
@@ -133,15 +170,18 @@ end
 todo1 = Todo.new("Buy milk")
 todo2 = Todo.new("Clean room")
 todo3 = Todo.new("Go to gym")
+todo4 = Todo.new("Clean the gym")
 
 list = TodoList.new("Today's Todos")
 list.add(todo1)
 list.add(todo2)
 list.add(todo3)
+list.add(todo4)
 
-todo1.done!
+# p list.find_by_title("gym")
+# p list.all_done
+# p list.all_not_done
+# p list.mark_done("gym")
 
-p(list.each { |todo| puts todo })
-
-results = list.select(&:done?)
-p results
+# p list.mark_all_done
+# p list.mark_all_undone
