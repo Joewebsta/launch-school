@@ -9,9 +9,9 @@ class Transaction
     @amount_paid = 0
   end
 
-  def prompt_for_payment(input: $stdin)
+  def prompt_for_payment(input: $stdin, output: $stdout)
     loop do
-      puts "You owe $#{item_cost}.\nHow much are you paying?"
+      output.puts "You owe $#{item_cost}.\nHow much are you paying?"
       @amount_paid = input.gets.chomp.to_f
       break if valid_payment? && sufficient_payment?
       puts 'That is not the correct amount. ' \
