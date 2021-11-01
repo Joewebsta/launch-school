@@ -1,15 +1,12 @@
 require "socket"
 
 def parse_request(request_line)
-  request_line_arr = request_line.split
+  http_method, path_and_params, http = request_line.split
+  path, params = path_and_params.split("?")
 
-  http_method = request_line_arr[0]
-  path_and_params = request_line_arr[1].split('?')
-  path = path_and_params[0]
-  params = path_and_params[1]
-  params_arr = params.split('&').map { |param| param.split('=') }
-  params = params_arr.each_with_object({}) do |(name, val), hash|
-    hash[name] = val
+  params = (params || "").split("&").each_with_object({}) do |pair, hash|
+    key, value = pair.split("=")
+    hash[key] = value
   end
 
   [http_method, path, params]
@@ -23,9 +20,7 @@ loop do
   request_line = client.gets # Read lines from socket
   next if !request_line || request_line =~ /favicon/
 
-  http_method,
-  path,
-  params = parse_request(request_line)
+  http_method, path, params = parse_request(request_line)
 
   client.puts "HTTP/1.1 200 OK" # Needed for rendering in chrome
   client.puts "Content-Type: text/html\r\n\r\n" # Needed for rendering in chrome
@@ -37,13 +32,13 @@ loop do
   client.puts params
   client.puts "</pre>"
 
-  client.puts "<h1>Rolls!</h1>"
-  rolls = params['rolls'].to_i
-  sides = params['sides'].to_i
-  rolls.times do
-    roll = rand(sides) + 1
-    client.puts "<p>", roll, "</roll>"
-  end
+  client.puts "<h1>Counter</h1>"
+
+  number = params["number"].to_i
+  client.puts "<p>The current number is #{number}.</p>"
+
+  client.puts "<a href='?number=#{number + 1}'>Add one.</a>"
+  client.puts "<a href='?number=#{number - 1}'>Subtract one.</a>"
 
   client.puts "</body>"
   client.puts "</html>"
