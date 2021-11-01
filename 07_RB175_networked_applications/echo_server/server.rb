@@ -23,14 +23,29 @@ loop do
   request_line = client.gets # Read lines from socket
   next if !request_line || request_line =~ /favicon/
 
-  request_line_components = parse_request(request_line)
-  params = request_line_components[2]
-  rolls = params['rolls'].to_i
-  sides = params['sides'].to_i
+  http_method,
+  path,
+  params = parse_request(request_line)
 
   client.puts "HTTP/1.1 200 OK" # Needed for rendering in chrome
-  client.puts "Content-Type: text/plain\r\n\r\n" # Needed for rendering in chrome
-  client.puts request_line
-  rolls.times { client.puts(rand(sides) + 1) }
+  client.puts "Content-Type: text/html\r\n\r\n" # Needed for rendering in chrome
+  client.puts "<html>"
+  client.puts "<body>"
+  client.puts "<pre>"
+  client.puts http_method
+  client.puts path
+  client.puts params
+  client.puts "</pre>"
+
+  client.puts "<h1>Rolls!</h1>"
+  rolls = params['rolls'].to_i
+  sides = params['sides'].to_i
+  rolls.times do
+    roll = rand(sides) + 1
+    client.puts "<p>", roll, "</roll>"
+  end
+
+  client.puts "</body>"
+  client.puts "</html>"
   client.close
 end
