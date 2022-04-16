@@ -1,0 +1,61 @@
+<script src="//dbdwvr6p7sskw.cloudfront.net/210/files/email_data_v2.js"></script>
+<script>
+  function mailCount(emailData) {
+    let emails = emailData.split('##||##\n\n');
+    let emailObjs = emails.map(email => createEmailObj(email));
+    let emailCount = emails.length;
+    let dateRange = calcDateRange(emailObjs);
+
+    console.log(`Count of Email: ${emailCount}`);
+    console.log(`Date Range: ${dateRange}`);
+  }
+
+  function createEmailObj(email) {
+    let emailParts = email.split('#/#\n');
+    let emailBody = emailParts.pop();
+
+    let emailObj = emailParts.reduce((emailObj, emailPart) => {
+      let property = emailPart.split(': ');
+      let [key, value] = property;
+
+      emailObj[key.toLowerCase()] = value;
+
+      return emailObj;
+    }, {});
+
+    emailObj['body'] = emailBody;
+
+    return emailObj;
+  }
+
+  function calcDateRange(emails) {
+    return emails.map(email => convertToDateObj(email.date))
+      .sort(sortByDate)
+      .filter(firstAndLast)
+      .map(date => date.toDateString())
+      .join(' - ');
+  }
+
+  function firstAndLast(date, i, dates) {
+    let dateIdx = dates.indexOf(date);
+    let lastIdx = dates.length - 1;
+    return (dateIdx === 0 || dateIdx === lastIdx)
+  }
+
+  function sortByDate(d1, d2) {
+    if (d1 < d2) return -1;
+    if (d1 > d2) return 1;
+    return 0;
+  }
+
+  function convertToDateObj(date) {
+    return new Date(date);
+  }
+
+  mailCount(emailData);
+
+// console output
+
+// Count of Email: 5
+// Date Range: Sat Jun 25 2016 - Thu Aug 11 2016
+</script>
