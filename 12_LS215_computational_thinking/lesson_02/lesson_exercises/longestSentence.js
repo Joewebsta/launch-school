@@ -29,7 +29,7 @@ let longText = 'Four score and seven years ago our fathers brought forth' +
   ' earth.';
 
 function longestSentence(text) {
-  let sentenceRegex = /\b[a-z\s,-]+\./gi;
+  let sentenceRegex = /\b[a-z ,-]+(\.|\?|!)/ig;
   let sentences = text.match(sentenceRegex);
   let sortedSentences = [...sentences].sort(sortByWordCount);
   let longestSentence = sortedSentences[sortedSentences.length - 1];
@@ -56,4 +56,4 @@ function displaySummary(sentence) {
   console.log(`The longest sentence has ${words.length} words.`);
 }
 
-longestSentence(longText);
+longestSentence("Hello! Why? Goodbye.");
