@@ -44,7 +44,7 @@ function century(year) {
 }
 
 function ending(century) {
-  if (/1[1-9]/.test(century)) return 'th';
+  if (/1[1-3]/.test(century)) return 'th';
   if (/1$/.test(century)) return 'st';
   if (/2$/.test(century)) return 'nd';
   if (/3$/.test(century)) return 'rd';
