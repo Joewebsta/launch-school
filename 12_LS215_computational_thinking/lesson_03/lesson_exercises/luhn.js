@@ -101,14 +101,14 @@ function luhn(numString) {
 
 // console.log(luhn()); // false
 // console.log(luhn('')); // false
-console.log(luhn('0')); // true ?
-console.log(luhn('0000')); // true ?
-console.log(luhn('1111')); // false
-console.log(luhn('8763')); // true
-console.log(luhn('!8763!')); // true
-console.log(luhn('87   63')); // true
-console.log(luhn('87*^%63')); // true
-console.log(luhn('2323 2005 7766 3554')); // true
+// console.log(luhn('0')); // true ?
+// console.log(luhn('0000')); // true ?
+// console.log(luhn('1111')); // false
+// console.log(luhn('8763')); // true
+// console.log(luhn('!8763!')); // true
+// console.log(luhn('87   63')); // true
+// console.log(luhn('87*^%63')); // true
+// console.log(luhn('2323 2005 7766 3554')); // true
 
 
 // console.log(checksum(double2ndDigit('8763')));
