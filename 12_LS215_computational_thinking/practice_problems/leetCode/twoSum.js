@@ -109,24 +109,36 @@ ALGO
 
 */
 
+
+
+// var twoSum = function(nums, target) {
+//   if (nums.length === 0) return [];
+//   const sumNums = [];
+
+//   nums.forEach((num, idx, arr) => {
+//     const numsCopy = [...nums];
+//     numsCopy.splice(idx, 1);
+
+//     numsCopy.forEach(numCopy => {
+//       if ((num + numCopy === target) && !sumNums.includes(num) && !sumNums.includes(numCopy)) {
+//         sumNums.push(num, numCopy);
+//       }
+//     })
+//   })
+
+//   return [nums.indexOf(sumNums[0]), nums.lastIndexOf(sumNums[1])]
+// };
+
+
 var twoSum = function(nums, target) {
-  if (nums.length === 0) return [];
-  const sumNums = [];
-
-  nums.forEach((num, idx, arr) => {
-    const numsCopy = [...nums];
-    numsCopy.splice(idx, 1);
-
-    numsCopy.forEach(numCopy => {
-      if ((num + numCopy === target) && !sumNums.includes(num) && !sumNums.includes(numCopy)) {
-        sumNums.push(num, numCopy);
+  for (let i = 0; i < nums.length; i += 1) {
+    for (let j = i + 1; j < nums.length; j += 1) {
+      if (nums[i] === target - nums[j]) {
+        return [i, j];
       }
-    })
-  })
-
-  return [nums.indexOf(sumNums[0]), nums.lastIndexOf(sumNums[1])]
-};
-
+    }
+  }
+}; 
 
 // Example 1:
 
@@ -136,22 +148,22 @@ let nums = [2,7,11,15]; let target = 9;
 
 // Example 2:
 
-nums = [3,2,4]
-target = 6
+// nums = [3,2,4]
+// target = 6
 // Output: [1,2]
 // Example 3:
 
-nums = [3,3]
-target = 6
+// nums = [3,3]
+// target = 6
 // Output: [0,1]
 
 // TEST CASES - ADDITONAL
 
-nums = [11, 15, 7, 2]
-target = 9
+// nums = [11, 15, 7, 2]
+// target = 9
 
-nums = []
-target = 6
+// nums = []
+// target = 6
 // Output: []
 
 
