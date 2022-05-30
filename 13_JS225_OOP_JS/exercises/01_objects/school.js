@@ -86,8 +86,6 @@ const school = {
     })
   },
 
-  // Done - Student doesn't have course removed
-  // Student has course, but has no grades
   courseReport(courseName) {
     let grades = this.studentGrades(courseName);
 
@@ -101,7 +99,6 @@ const school = {
   displayGradeInfo(courseName, grades) {
       let average = this.calculateGradeAverage(grades);
     
-      console.log(average)
       console.log(`=${courseName} Grades=`);
       this.displayGrades(grades);
       
