@@ -96,23 +96,38 @@
 
 
 // Problem 6
-let ninjaA;
-let ninjaB;
+// let ninjaA;
+// let ninjaB;
 
-function Ninja() {
-  this.swung = false;
-}
+// function Ninja() {
+//   this.swung = false;
+// }
 
-ninjaA = new Ninja();
-ninjaB = new Ninja();
+// ninjaA = new Ninja();
+// ninjaB = new Ninja();
 
-Ninja.prototype.swing = function() {
-  this.swung = true;
-  return this;
-}
+// Ninja.prototype.swing = function() {
+//   this.swung = true;
+//   return this;
+// }
 
-// Add a swing method to the Ninja prototype which
-// returns the calling object and modifies swung
+// // Add a swing method to the Ninja prototype which
+// // returns the calling object and modifies swung
 
-console.log(ninjaA.swing().swung);      // must log true
-console.log(ninjaB.swing().swung);      // must log true
+// console.log(ninjaA.swing().swung);      // must log true
+// console.log(ninjaB.swing().swung);      // must log true
+
+// Problem 7
+let ninjaA = (function() {
+  function Ninja() {};
+  return new Ninja();
+})();
+
+// create a ninjaB object
+let ninjaB = new ninjaA.constructor
+let ninjaC = Object.create(Object.getPrototypeOf(ninjaA))
+
+ninjaB
+ninjaC
+
+console.log(ninjaB.constructor === ninjaA.constructor);    // should log true
