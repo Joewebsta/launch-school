@@ -142,60 +142,61 @@ const ItemCreator = (function() {
     return (name.substring(0,3) + category.substring(0,2)).toUpperCase();
   }
   
-  return {
-    create(name, category, quantity) {
-      if (isValidItem(name, category, quantity)) {
-        return { sku: generateSku(name, category), name, category, quantity };
-      } else {
-        return { notValid: true };
-      }
+  return function(name, category, quantity) {
+    if (isValidItem(name, category, quantity)) {
+      this.sku = generateSku(name, category);
+      this.name = name;
+      this.category = category;
+      this.quantity = quantity;
+    } else {
+      return { notValid: true };
     }
   }
 })();
 
-const ItemManager = (function() {
-  
-  return {
-    items: [],
+const ItemManager = {
+  items: [],
 
-    create(name, category, quantity) {
-      const item = ItemCreator.create(name, category, quantity);
+  create(name, category, quantity) {
+    const item = new ItemCreator(name, category, quantity);
 
-      if (item.notValid)
-        return false;
-      else {
-        this.items.push(item);
-      }
-    },
-
-    delete(sku) {
-      const skus = this.items.map(({sku}) => sku)
-      const indexToRemove = skus.indexOf(sku);
-      return this.items.splice(indexToRemove, 1)[0];
-    },
-
-    update(selectedSku, propObj) {
-      const item = this.items.find(({ sku }) => sku === selectedSku);
-      
-      for (let key in propObj) {
-        item[key] = propObj[key];
-      }
-      
-      return item;
-    },
-
-    inStock() {
-      // log or return array?
-      return this.items.filter(({ quantity }) => quantity > 0);
-    },
-
-    itemsInCategory(selectedCategory) {
-      const categoryItems = this.items.filter(({ category }) => category === selectedCategory);
-      
-      return (categoryItems.length > 0) ? categoryItems : 'No items in category.';
+    if (item.notValid)
+      return false;
+    else {
+      this.items.push(item);
     }
+  },
+
+  delete(sku) {
+    const skus = this.items.map(({sku}) => sku)
+    const indexToRemove = skus.indexOf(sku);
+    return this.items.splice(indexToRemove, 1)[0];
+  },
+
+  update(selectedSku, propObj) {
+    const item = this.items.find(({ sku }) => sku === selectedSku);
+    
+    for (let key in propObj) {
+      item[key] = propObj[key];
+    }
+    
+    return item;
+  },
+
+  list() {
+    return this.items;
+  },
+
+  inStock() {
+    return this.items.filter(({ quantity }) => quantity > 0);
+  },
+
+  itemsInCategory(selectedCategory) {
+    const categoryItems = this.items.filter(({ category }) => category === selectedCategory);
+    
+    return (categoryItems.length > 0) ? categoryItems : 'No items in category.';
   }
-})();
+  }
 
 const ReportManager = (function() {
   return {
@@ -233,7 +234,7 @@ ItemManager.create('football', 'sports', 3);              // valid item
 ItemManager.create('kitchen pot', 'cooking items', 0);
 ItemManager.create('kitchen pot', 'cooking', 3);          // valid item
 
-// console.log(ItemManager.items);
+console.log(ItemManager.items);
 // returns list with the 4 valid items
 
 ReportManager.init(ItemManager);
