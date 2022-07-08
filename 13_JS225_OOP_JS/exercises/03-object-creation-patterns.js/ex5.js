@@ -147,13 +147,13 @@ const ItemCreator = (function() {
   }
 
   function generateSku(name, category) {
-    return name.substring(0,3) + category.substring(0,2);
+    return (name.substring(0,3) + category.substring(0,2)).toUpperCase();
   }
   
   return {
     create(name, category, quantity) {
       if (isValidItem(name, category, quantity)) {
-        return { name, category, quantity, sku: generateSku(name, category)  };
+        return { sku: generateSku(name, category), name, category, quantity };
       } else {
         return { notValid: true };
       }
@@ -175,21 +175,58 @@ const ItemManager = (function() {
       }
     },
 
+    delete(sku) {
+      const skus = items.map(({sku}) => sku)
+      const indexToRemove = skus.indexOf(sku);
+      return items.splice(indexToRemove, 1);
+    },
+
     items() {
-      items.forEach(item => console.log(item))
+      // log or return array?
+      return items;
+    },
+
+    inStock() {
+      // log or return array?
+      return items.filter(({ quantity }) => quantity > 0);
+    },
+
+    itemsInCategory(selectedCategory) {
+      const categoryItems = items.filter(({ category }) => category === selectedCategory);
+      
+      return (categoryItems.length > 0) ? categoryItems : 'No items in category.';
     }
   }
-})()
+})();
 
+const ReportManager = (function() {
+  return {
+    init(itemManager) {
+      this.items = itemManager;
+    },
+
+    reportInStock() {
+      const items = this.items.inStock();
+      console.log(items.map(({name}) => name).join());
+    }
+  };
+})()
 
 ItemManager.create('basket ball', 'sports', 0);           // valid item
 ItemManager.create('soccer ball', 'sports', 5);           // valid item
 ItemManager.create('football', 'sports', 3);              // valid item
 ItemManager.create('kitchen pot', 'cooking', 3);          // valid item
-ItemManager.create('asd', 'sports', 0);
-ItemManager.create('football', 'sports');
-ItemManager.create('kitchen pot', 'cooking items', 0);
+// console.log(ItemManager.create('asd', 'sports', 0));
+// ItemManager.create('football', 'sports');
+// ItemManager.create('kitchen pot', 'cooking items', 0);
 
-ItemManager.items()
+// console.log(ItemManager.items())
+// console.log(ItemManager.inStock())
+// console.log(ItemManager.itemsInCategory('sports'))
+// console.log(ItemManager.itemsInCategory())
+
+console.log(ItemManager.delete('SOCSP'));
 
 
+ReportManager.init(ItemManager);
+ReportManager.reportInStock()
