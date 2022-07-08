@@ -113,15 +113,7 @@ DYNAMIC ----------------
   - generated from item name and category
   - unique identifier for product
     - first 3 letters of item name + first 2 letters of category
-
-
-
-
 */
-
-// Invalid name - 'asd'
-// Missing value
-// Invalid category - 'cooking items'
 
 const ItemCreator = (function() {
   function isValidItem(name, category, quantity) {
@@ -162,37 +154,43 @@ const ItemCreator = (function() {
 })();
 
 const ItemManager = (function() {
-  const items = [];
-
+  
   return {
+    items: [],
+
     create(name, category, quantity) {
       const item = ItemCreator.create(name, category, quantity);
 
       if (item.notValid)
         return false;
       else {
-        items.push(item);
+        this.items.push(item);
       }
     },
 
     delete(sku) {
-      const skus = items.map(({sku}) => sku)
+      const skus = this.items.map(({sku}) => sku)
       const indexToRemove = skus.indexOf(sku);
-      return items.splice(indexToRemove, 1);
+      return this.items.splice(indexToRemove, 1)[0];
     },
 
-    items() {
-      // log or return array?
-      return items;
+    update(selectedSku, propObj) {
+      const item = this.items.find(({ sku }) => sku === selectedSku);
+      
+      for (let key in propObj) {
+        item[key] = propObj[key];
+      }
+      
+      return item;
     },
 
     inStock() {
       // log or return array?
-      return items.filter(({ quantity }) => quantity > 0);
+      return this.items.filter(({ quantity }) => quantity > 0);
     },
 
     itemsInCategory(selectedCategory) {
-      const categoryItems = items.filter(({ category }) => category === selectedCategory);
+      const categoryItems = this.items.filter(({ category }) => category === selectedCategory);
       
       return (categoryItems.length > 0) ? categoryItems : 'No items in category.';
     }
@@ -208,25 +206,65 @@ const ReportManager = (function() {
     reportInStock() {
       const items = this.items.inStock();
       console.log(items.map(({name}) => name).join());
+    },
+
+    createReporter(selectedSku) {
+      const item = this.items.items.find(({ sku }) => sku === selectedSku);
+       
+      function Reporter() {};
+
+      Reporter.prototype.itemInfo = function() {
+        for(let key in item) {
+          console.log(`${key}: ${item[key]}`);
+        }
+      }
+
+      return new Reporter();
     }
   };
-})()
+})();
+
 
 ItemManager.create('basket ball', 'sports', 0);           // valid item
+ItemManager.create('asd', 'sports', 0);
 ItemManager.create('soccer ball', 'sports', 5);           // valid item
+ItemManager.create('football', 'sports');
 ItemManager.create('football', 'sports', 3);              // valid item
+ItemManager.create('kitchen pot', 'cooking items', 0);
 ItemManager.create('kitchen pot', 'cooking', 3);          // valid item
-// console.log(ItemManager.create('asd', 'sports', 0));
-// ItemManager.create('football', 'sports');
-// ItemManager.create('kitchen pot', 'cooking items', 0);
 
-// console.log(ItemManager.items())
-// console.log(ItemManager.inStock())
-// console.log(ItemManager.itemsInCategory('sports'))
-// console.log(ItemManager.itemsInCategory())
-
-console.log(ItemManager.delete('SOCSP'));
-
+// console.log(ItemManager.items);
+// returns list with the 4 valid items
 
 ReportManager.init(ItemManager);
-ReportManager.reportInStock()
+// ReportManager.reportInStock();
+// // logs soccer ball,football,kitchen pot
+
+ItemManager.update('SOCSP', { quantity: 0 });
+// console.log(ItemManager.inStock());
+// // returns list with the item objects for football and kitchen pot
+// ReportManager.reportInStock();
+// // logs football,kitchen pot
+// console.log(ItemManager.itemsInCategory('sports'));
+// // returns list with the item objects for basket ball, soccer ball, and football
+ItemManager.delete('SOCSP');
+// console.log(ItemManager.items);
+// // returns list with the remaining 3 valid items (soccer ball is removed from the list)
+
+
+
+const kitchenPotReporter = ReportManager.createReporter('KITCO');
+// kitchenPotReporter.itemInfo();
+// logs
+// skuCode: KITCO
+// itemName: kitchen pot
+// category: cooking
+// quantity: 3
+
+ItemManager.update('KITCO', { quantity: 10 });
+// kitchenPotReporter.itemInfo();
+// logs
+// skuCode: KITCO
+// itemName: kitchen pot
+// category: cooking
+// quantity: 10
