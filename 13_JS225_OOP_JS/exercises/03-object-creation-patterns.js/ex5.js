@@ -125,7 +125,7 @@ DYNAMIC ----------------
 
 const ItemCreator = (function() {
   function isValidItem(name, category, quantity) {
-    return isValidName(name) &&  isValidCategory(category) && !!quantity;
+    return isValidName(name) &&  isValidCategory(category) && isValidQuantity(quantity);
   };
 
   function isValidName(name) {
@@ -133,25 +133,27 @@ const ItemCreator = (function() {
     if (name === undefined) return false;
 
     const cleanName = name.replace(/\s{2,}/, ' ').replaceAll(' ', '');
-    // const cleanNameNoSpaces = cleanName.replaceAll(' ', '');
-    // console.log(cleanName)
-    // const regex = new RegExp(/^([a-z0-9]+\s)+[a-z0-9]+$/, 'i');      
-    // console.log(regex)
-    // regex.test(cleanName)
-
     return cleanName.length >= 5;
   };
   
   function isValidCategory(category) {
     if (category === undefined) return false;
-  
     return /^[a-z0-9]+$/.test(category) && category.length >= 5;
   };
+
+  function isValidQuantity(quantity) {
+    if (quantity === undefined) return false;
+    return quantity >= 0;
+  }
+
+  function generateSku(name, category) {
+    return name.substring(0,3) + category.substring(0,2);
+  }
   
   return {
     create(name, category, quantity) {
       if (isValidItem(name, category, quantity)) {
-        return { name, category, quantity };
+        return { name, category, quantity, sku: generateSku(name, category)  };
       } else {
         return { notValid: true };
       }
@@ -160,13 +162,7 @@ const ItemCreator = (function() {
 })();
 
 const ItemManager = (function() {
-  const items = [
-    {
-      name: 'basket ball',
-      category: 'sports',
-      quantity: 0,
-    }
-  ];
+  const items = [];
 
   return {
     create(name, category, quantity) {
@@ -181,7 +177,6 @@ const ItemManager = (function() {
 
     items() {
       items.forEach(item => console.log(item))
-      // return items;
     }
   }
 })()
