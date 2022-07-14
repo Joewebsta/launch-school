@@ -966,73 +966,215 @@
 
 // Student
 
+// PSEUDO-CLASSICAL
+// OLOO
+// CLASS
 
-const createStudent = (name, year) => {
-  return {
-    name,
-    year,
-    courses: [],
+// const createStudent = (name, year) => {
+//   return {
+//     name,
+//     year,
+//     courses: [],
 
-    info() {
-      console.log(`${name} is a ${year} year student`)
-    },
+//     info() {
+//       console.log(`${name} is a ${year} year student`)
+//     },
 
-    listCourses() {
-      return this.courses;
-    },
+//     listCourses() {
+//       return this.courses;
+//     },
 
-    getCourse(courseCode) {
-      return this.courses.find(({ code }) => code === courseCode);
-    },
+//     getCourse(courseCode) {
+//       return this.courses.find(({ code }) => code === courseCode);
+//     },
 
-    addCourse(course) {
-      this.courses.push(course);
-    },
+//     addCourse(course) {
+//       this.courses.push(course);
+//     },
 
-    addNote(code, note) {
-      const course = this.getCourse(code);
-      if (course.note) {
-        course.note.push(note);
-      } else {
-        course.note = [note];
-      }
-    },
+//     addNote(code, note) {
+//       const course = this.getCourse(code);
+//       if (course.note) {
+//         course.note.push(note);
+//       } else {
+//         course.note = [note];
+//       }
+//     },
 
-    viewNotes() {
-      this.listCourses().filter(({ note }) => note).forEach(({ name, note }) => {
-        console.log(`${name}: ${note.join('; ')}`)
-      });
-    },
+//     viewNotes() {
+//       this.listCourses().filter(({ note }) => note).forEach(({ name, note }) => {
+//         console.log(`${name}: ${note.join('; ')}`)
+//       });
+//     },
 
-    updateNote(code, newNote) {
-      const course = this.getCourse(code);
-      if (course) {
-        course.note = [newNote];
-      }
-    }
-  }
+//     updateNote(code, newNote) {
+//       const course = this.getCourse(code);
+//       if (course) {
+//         course.note = [newNote];
+//       }
+//     }
+//   }
+// }
+
+// const school = (() => {
+//   const students = [];
+//   const validYears = ['1st', '2nd', '3rd', '4th', '5th'];
+
+//   const studentsWithGrades = function(courseName) {
+//     const studentsWithGrades = [];
+
+//     students.forEach(({name, courses}) => {
+//       courses.forEach(course => {
+//         if (courseName === course.name && course.grade) {
+//           studentsWithGrades.push({
+//             name, 
+//             grade: course.grade,
+//           });
+//         }
+//       });
+//     });
+
+//     return studentsWithGrades;
+//   };
+
+//   const averageGrade = function(students) {
+//     if (students.length > 0) {
+//       const total = students.reduce((total, {grade}) => {
+//         return total + grade;
+//       }, 0)
+    
+//       return Math.round(total/students.length);
+//     }
+//   };
+
+//   return {
+    
+    
+  
+//     addStudent(name, year) {
+//       if (validYears.includes(year)) {
+//         const student = createStudent(name, year);
+//         students.push(student);
+//         return student;
+//       } else {
+//         return 'Invalid Year';
+//       }
+//     },
+  
+//     enrollStudent(student, course) {
+//       // CHECK THAT COURSE DOESN'T ALREADY EXIST
+//       student.addCourse(course);
+//     },
+  
+//     addGrade(student, courseCode, grade) {
+//       // CHECK THAT COURSE EXISTS
+//       student.getCourse(courseCode).grade = grade;
+//     },
+  
+//     getReportCard(student) {
+//       const courses = student.listCourses();
+//       courses.forEach(({ name, grade }) => {
+//         console.log(`${name}: ${grade || 'In progress'}`)
+//       })
+//     },
+  
+    
+  
+//     courseReport(courseName) {
+//       const students = studentsWithGrades(courseName);
+      
+//       if (students.length > 0) {
+//         const average = averageGrade(students);
+//         console.log(`=${courseName} Grades=`);
+//         students.forEach(({name, grade}) => console.log(`${name}: ${grade}`));
+//         console.log(`Course Average: ${average}`);
+//       } else {
+//         return undefined;
+//       }
+      
+//     }
+//   }
+// })();
+
+
+
+
+// const foo = school.addStudent('foo', '3rd');
+
+// school.enrollStudent(foo, { name: 'Math', code: 101 });
+// school.enrollStudent(foo, { name: 'Advanced Math', code: 102 });
+// school.enrollStudent(foo, { name: 'Physics', code: 202, });
+// school.addGrade(foo, 101, 95);
+// school.addGrade(foo, 102, 90);
+
+// const bar = school.addStudent('bar', '1st');
+// school.enrollStudent(bar, { name: 'Math', code: 101 });
+// school.addGrade(bar, 101, 91);
+
+// const qux = school.addStudent('qux', '2nd');
+// school.enrollStudent(qux, { name: 'Math', code: 101});
+// school.enrollStudent(qux, { name: 'Advanced Math', code: 102,});
+// school.addGrade(qux, 101, 93);
+// school.addGrade(qux, 102, 90);
+
+// school.courseReport('Math');
+// school.courseReport('Advanced Math');
+// console.log(school.courseReport('Physics'));
+
+// // let foo = createStudent('Foo', '1st');
+// // foo
+// // foo.info();
+// // // "Foo is a 1st year student"
+// // console.log(foo.listCourses());
+// // // // [];
+// // // foo.addCourse({ name: 'Math', code: 101 });
+// // foo.addCourse({ name: 'Advanced Math', code: 102 });
+// // console.log(foo.listCourses());
+// // // // [{ name: 'Math', code: 101 }, { name: 'Advanced Math', code: 102 }]
+
+// // // foo.addNote(101, 'Fun course');
+// // // foo.addNote(101, 'Remember to study for algebra');
+// // // foo.viewNotes();
+// // // // "Math: Fun course; Remember to study for algebra"
+// // // foo.addNote(102, 'Difficult subject');
+// // // foo.viewNotes();
+// // // // "Math: Fun course; Remember to study for algebra"
+// // // // "Advance Math: Difficult subject"
+// // foo.updateNote(101, 'Fun course');
+// // foo.viewNotes();
+// // // // "Math: Fun course"
+// // // // "Advanced Math: Difficult subject"
+
+
+// Classical Object Creation
+
+function Person(firstName, lastName, age, gender) {
+  this.firstName = firstName;
+  this.lastName = lastName;
+  this.age = age;
+  this.gender = gender;
 }
 
-let foo = createStudent('Foo', '1st');
-foo
-foo.info();
-// "Foo is a 1st year student"
-console.log(foo.listCourses());
-// // [];
-// foo.addCourse({ name: 'Math', code: 101 });
-foo.addCourse({ name: 'Advanced Math', code: 102 });
-console.log(foo.listCourses());
-// // [{ name: 'Math', code: 101 }, { name: 'Advanced Math', code: 102 }]
+Person.prototype.eat = function() {
+  console.log('eating');
+}
 
-// foo.addNote(101, 'Fun course');
-// foo.addNote(101, 'Remember to study for algebra');
-// foo.viewNotes();
-// // "Math: Fun course; Remember to study for algebra"
-// foo.addNote(102, 'Difficult subject');
-// foo.viewNotes();
-// // "Math: Fun course; Remember to study for algebra"
-// // "Advance Math: Difficult subject"
-foo.updateNote(101, 'Fun course');
-foo.viewNotes();
-// // "Math: Fun course"
-// // "Advanced Math: Difficult subject"
+Person.prototype.communicate = function() {
+  console.log('communicating');
+}
+
+Person.prototype.communicate = function() {
+  console.log('communicating');
+}
+
+
+const person = new Person('foo', 'bar', 21, 'gender');
+person
+console.log(person instanceof Person);     // logs true
+person.eat();                              // logs 'Eating'
+person.communicate();                      // logs 'Communicating'
+person.sleep();                            // logs 'Sleeping'
+console.log(person.fullName());     
+
+
+
