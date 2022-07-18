@@ -118,7 +118,7 @@ DYNAMIC ----------------
 const ItemCreator = (function() {
   function isValidItem(name, category, quantity) {
     return isValidName(name) &&  isValidCategory(category) && isValidQuantity(quantity);
-  };
+  }
 
   function isValidName(name) {
     // should not start with a space or end with a space.
@@ -126,12 +126,12 @@ const ItemCreator = (function() {
 
     const cleanName = name.replace(/\s{2,}/, ' ').replaceAll(' ', '');
     return cleanName.length >= 5;
-  };
+  }
   
   function isValidCategory(category) {
     if (category === undefined) return false;
     return /^[a-z0-9]+$/.test(category) && category.length >= 5;
-  };
+  }
 
   function isValidQuantity(quantity) {
     if (quantity === undefined) return false;
@@ -212,7 +212,7 @@ const ReportManager = (function() {
     createReporter(selectedSku) {
       const item = this.items.items.find(({ sku }) => sku === selectedSku);
        
-      function Reporter() {};
+      function Reporter() {}
 
       Reporter.prototype.itemInfo = function() {
         for(let key in item) {
@@ -255,7 +255,7 @@ ItemManager.delete('SOCSP');
 
 
 const kitchenPotReporter = ReportManager.createReporter('KITCO');
-// kitchenPotReporter.itemInfo();
+kitchenPotReporter.itemInfo();
 // logs
 // skuCode: KITCO
 // itemName: kitchen pot
