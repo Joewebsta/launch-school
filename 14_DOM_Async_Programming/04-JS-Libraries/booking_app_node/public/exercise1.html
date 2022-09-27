@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercise 1</title>
+</head>
+
+<body>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let request = new XMLHttpRequest();
+      request.open('GET', '/api/schedules');
+      request.responseType = 'text';
+      request.timeout = 5000;
+
+      request.addEventListener('load', () => {
+        let data = JSON.parse(request.responseText);
+
+        let tally = data.reduce((tally, schedule) => {
+          if (schedule.student_email) {
+            tally[schedule.staff_id] = (tally[schedule.staff_id] || 0) + 1;
+          }
+
+          return tally;
+        }, {})
+
+        if (Object.keys(tally).length === 0) {
+          console.log('There are no schedules available for booking.');
+        } else {
+          for (let key in tally) {
+            console.log(`Staff ${key}: ${tally[key]} `);
+          }
+        }
+      });
+
+      request.addEventListener('timeout', () => {
+        console.log('Your request timed out. Please try again!');
+      });
+
+      request.send();
+    });
+  </script>
+</body>
+
+</html>
