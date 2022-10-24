@@ -12,8 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
       },
   
       cacheTemplate: function() {
-        var $iTmpl = $("#inventory_item").remove();
-        this.template = $iTmpl.html();
+        this.template = document.querySelector('#inventory_item').innerHTML;
       },
   
       // CREATE
@@ -63,10 +62,16 @@ document.addEventListener('DOMContentLoaded', () => {
   
       newItem: function(e) {
         e.preventDefault();
+
+        console.log('hello there!');
+        console.log(this);
         var item = this.add(),
             $item = $(this.template.replace(/ID/g, item.id));
   
         $("#inventory").append($item);
+
+        console.log(this)
+        console.log(this.template)
       },
       
       findParent: function(e) {
@@ -85,15 +90,29 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       
       updateItem: function(e) {
+        console.log('hello');
         var $item = this.findParent(e);
   
         this.update($item);
       },
       
       bindEvents: function() {
-        $("#add_item").on("click", $.proxy(this.newItem, this));
-        $("#inventory").on("click", "a.delete", $.proxy(this.deleteItem, this));
-        $("#inventory").on("blur", ":input", $.proxy(this.updateItem, this));
+        // $("#add_item").on("click", $.proxy(this.newItem, this));
+        document.querySelector('#add_item').addEventListener('click', this.newItem.bind(this));
+        
+        // $("#inventory").on("click", "a.delete", $.proxy(this.deleteItem, this));
+        document.querySelector('#inventory').addEventListener('click', (e) => {
+          if (e.target.className === 'delete') {
+            this.deleteItem.call(this, e);
+          }
+        });
+        
+        // STOPPED HERE!
+        // $("#inventory").on("blur", ":input", $.proxy(this.updateItem, this));
+        document.querySelector('#inventory input').addEventListener('blur', (e) => {
+          console.log(e.target.tagName);
+        });
+
       },
   
       init: function() {
