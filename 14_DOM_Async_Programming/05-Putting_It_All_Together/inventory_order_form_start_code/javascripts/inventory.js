@@ -62,16 +62,16 @@ document.addEventListener('DOMContentLoaded', () => {
   
       newItem: function(e) {
         e.preventDefault();
+        
+        let item = this.add();
+        let inventoryItemTemplate = document.querySelector('#inventory_item_template');
+        let inventoryItemTemplateFunc = Handlebars.compile(inventoryItemTemplate.innerHTML);
+        document.querySelector('#inventory').insertAdjacentHTML('beforeend', inventoryItemTemplateFunc({id: item.id}));
 
-        console.log('hello there!');
-        console.log(this);
-        var item = this.add(),
-            $item = $(this.template.replace(/ID/g, item.id));
-  
-        $("#inventory").append($item);
-
-        console.log(this)
-        console.log(this.template)
+        // let item = this.add();
+        // console.log(this.template.replace(/ID/g, item.id));
+        // let $item = $(this.template.replace(/ID/g, item.id));
+        // $("#inventory").append($item);
       },
       
       findParent: function(e) {
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
       init: function() {
         this.setDate();
-        this.cacheTemplate();
+        // this.cacheTemplate();
         this.bindEvents();
       }
     };
