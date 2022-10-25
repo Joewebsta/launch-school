@@ -101,18 +101,18 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('#add_item').addEventListener('click', this.newItem.bind(this));
         
         // $("#inventory").on("click", "a.delete", $.proxy(this.deleteItem, this));
-        document.querySelector('#inventory').addEventListener('click', (e) => {
+        document.querySelector('#inventory').addEventListener('click', e => {
           if (e.target.className === 'delete') {
             this.deleteItem.call(this, e);
           }
         });
-        
-        // STOPPED HERE!
-        // $("#inventory").on("blur", ":input", $.proxy(this.updateItem, this));
-        document.querySelector('#inventory input').addEventListener('blur', (e) => {
-          console.log(e.target.tagName);
-        });
 
+        // $("#inventory").on("blur", ":input", $.proxy(this.updateItem, this));
+        document.querySelector('#inventory').addEventListener('focusout', e => {
+          if (e.target.tagName === 'INPUT') {
+            this.updateItem(e);
+          }
+        });
       },
   
       init: function() {
