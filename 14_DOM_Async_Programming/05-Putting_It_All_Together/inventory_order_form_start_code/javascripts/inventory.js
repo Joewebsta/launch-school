@@ -88,9 +88,10 @@ document.addEventListener('DOMContentLoaded', () => {
       
       deleteItem: function(e) {
         e.preventDefault();
-        var $item = this.findParent(e).remove();
-  
-        this.remove(this.findID($item));
+
+        var item = this.findParent(e);
+        this.remove(this.findID(item));
+        item.remove();
       },
       
       updateItem: function(e) {
