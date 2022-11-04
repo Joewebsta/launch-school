@@ -51,13 +51,16 @@ document.addEventListener('DOMContentLoaded', () => {
       },
   
       // UPDATE
-      update: function($item) {
-        var id = this.findID($item),
-            item = this.get(id);
+      update: function(itemTR) {
+        var id = this.findID(itemTR);
+        var item = this.get(id);
   
-        item.name = $item.find("[name^=item_name]").val();
-        item.stock_number = $item.find("[name^=item_stock_number]").val();
-        item.quantity = $item.find("[name^=item_quantity]").val();
+        // item.name = $item.find("[name^=item_name]").val();
+        item.name = itemTR.querySelector("[name^=item_name]").value;
+        // item.stock_number = $item.find("[name^=item_stock_number]").val();
+        item.stock_number = itemTR.querySelector("[name^=item_stock_number]").value;
+        // item.quantity = $item.find("[name^=item_quantity]").val();
+        item.quantity = itemTR.querySelector("[name^=item_quantity]").value;
       },
   
       newItem: function(e) {
@@ -75,11 +78,12 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       
       findParent: function(e) {
-        return $(e.target).closest("tr");
+        // return $(e.target).closest("tr");
+        return e.target.closest('tr');
       },
       
-      findID: function($item) {
-        return +$item.find("input[type=hidden]").val();
+      findID: function(item) {
+        return Number(item.querySelector('input[type="hidden"]').value);
       },
       
       deleteItem: function(e) {
@@ -90,10 +94,9 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       
       updateItem: function(e) {
-        console.log('hello');
-        var $item = this.findParent(e);
+        var item = this.findParent(e);
   
-        this.update($item);
+        this.update(item);
       },
       
       bindEvents: function() {
