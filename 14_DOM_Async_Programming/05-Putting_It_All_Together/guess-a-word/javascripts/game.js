@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     spans.forEach(span => span.remove());
     letters.insertAdjacentHTML("beforeend", spaces);
     this.spaces = document.querySelectorAll("#spaces span");
+    console.log(this);
   }
 
   Game.prototype.init = function() {
