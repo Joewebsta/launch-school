@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="stylesheets/groceries.css">
+  <title>Groceries</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+</head>
+
+<body>
+  <div class="app"></div>
+
+  <script id="groceryTemplate" type="text/x-handlebars">
+    <main>
+      <h2>Add an item</h2>
+      <form action="" method="post">
+        <div class="form-row">
+          <label for="name">Item name</label>
+          <input id="name" name="name" type="text">
+        </div>
+        <div class="form-row">
+          <label for="quantity">Quantity</label>
+          <input id="quantity" name="quantity" type="text">
+        </div>
+        <div class="form-row">
+          <input type="submit" value="Add">
+        </div>
+      </form>
+      <section>
+        <h2 class="groceries">Groceries</h2>
+        <ul id="grocery-list">
+          <li>No items</li>
+          <!-- {{#if items}}
+            {{> itemListTemplate}}
+            {{else}}
+            <p>No items</p>
+            {{/if}} -->
+        </ul>
+      </section>
+    </main>
+  </script>
+
+  <script id="itemListTemplate" type="text/x-handlebars">
+    {{#each items}}
+      <li>{{quantity}} {{name}}</li>
+    {{/each}}
+  </script>
+
+  <script src="javascripts/groceries.js"></script>
+</body>
+
+</html>
