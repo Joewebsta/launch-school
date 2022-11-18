@@ -1,0 +1,30 @@
+html,
+body {
+  background-color: maroon;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 25px 0;
+}
+
+h1 {
+  font-size: 40px;
+}
+
+main {
+  background-color: white;
+  box-sizing: border-box;
+  margin: 0 auto;
+  max-width: 500px;
+  padding: 20px;
+}
+
+input[type="number"] {
+  font-size: 20px;
+  vertical-align: middle;
+  width: 80px;
+}
+
+input[type="submit"] {
+  height: 30px;
+  width: 30px;
+}
